@@ -1,0 +1,165 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: '38611138B6422A91FC',
+    participant: undefined
+  },
+  messageTimestamp: 1705329367,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'ola', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'ola',
+  from: '56963754310'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: 'E2B4EF780299676A12',
+    participant: undefined
+  },
+  messageTimestamp: 1705329374,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'hola', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'hola',
+  from: '56963754310'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_c40065c7-9f1f-4902-9919-85f016208e5f',
+  keyword: 'key_94d3873d-32ab-46a9-b606-318e1da2ef35',
+  answer: '🙌 Hola bienvenido a este *Chatbot*',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '1e9b45bc12729143dc7c19e1d4fbee6d'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_42a850e2-9402-404f-8f3c-d12b573bd92b',
+  keyword: 'ans_c40065c7-9f1f-4902-9919-85f016208e5f',
+  answer: 'te comparto los siguientes links de interes sobre el proyecto\n' +
+    '👉 *doc* para ver la documentación\n' +
+    '👉 *gracias*  para ver la lista de videos\n' +
+    '👉 *discord* unirte al discord',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object]
+    ],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '67e4cb792856669f613fb15ce8668202'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: '6CCAF5A8B972D4BACF',
+    participant: undefined
+  },
+  messageTimestamp: 1705329383,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'gracias', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'gracias',
+  from: '56963754310'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_7cca869e-1088-4b27-b3e8-15bb06dc6e11',
+  keyword: 'key_1ee4bfb6-b839-4854-bb00-bdafcfeb63cb',
+  answer: '🚀 Puedes aportar tu granito de arena a este proyecto\n' +
+    '[*opencollective*] https://opencollective.com/bot-whatsapp\n' +
+    '[*buymeacoffee*] https://www.buymeacoffee.com/leifermendez\n' +
+    '[*patreon*] https://www.patreon.com/leifermendez\n' +
+    '\n' +
+    '*2* Para siguiente paso.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [ [Object], [Object] ],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '32d9df837e35a08575f07982d3044582'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: '410865CB550F14AFBB',
+    participant: undefined
+  },
+  messageTimestamp: 1705329389,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: '2', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '2',
+  from: '56963754310'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_c6937717-2301-43de-aa24-a0120010afc7',
+  keyword: 'key_f0d97c1d-fd9d-491d-a6d0-a08727500554',
+  answer: '📄 Aquí tenemos el flujo secundario',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '506f7c4c3602790927b7c993820eafcd'
+}
