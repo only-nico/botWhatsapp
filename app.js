@@ -56,11 +56,21 @@ const flowPrincipal = addKeyword(['hola', 'ole', 'alo'])
             '👉 *doc* para ver la documentación',
             '👉 *gracias*  para ver la lista de videos',
             '👉 *discord* unirte al discord',
+            {buttons:[
+                {
+                    body:'hola'
+                },
+                {
+                    body:'chao'
+                }
+            ]
+        }
         ],
         null,
         null,
         [flowDocs, flowGracias, flowTuto, flowDiscord]
     )
+    
 
 const main = async () => {
     const adapterDB = new MockAdapter()
