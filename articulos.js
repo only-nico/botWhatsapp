@@ -5,7 +5,7 @@ const fetchArticles = async () => {
     let page = 1;
 
     try {
-        while (page <= 10) {
+        while (page <= 7) {
             let htmlString = await fetch(`https://encuentro.migracionescomunicativas.cl/wp-json/wp/v2/posts/?paged=${page}`)
                 .then(response => response.text());
 
@@ -28,9 +28,12 @@ const fetchArticles = async () => {
 
 const processArticles = (arregloArticulos) => {
     const textoPagina = [];
+    var indice = 1;
 
     for (const elem of arregloArticulos) {
         const { document } = new JSDOM(elem).window;
+
+        const fragmentoTitulo = document.querySelector('.entry-header a')?.textContent || '';
 
         // Selecciona el fragmento de texto que deseas
         const fragmentoTexto = document.querySelector('.entry-content p')?.textContent || '';
@@ -49,10 +52,13 @@ const processArticles = (arregloArticulos) => {
 
         // Imprime el fragmento de texto y el atributo src (si existe)
         textoPagina.push({
+            fragmentoTitulo,
             fragmentoTexto,
             fragmentoLink,
             src,
+            indice
         });
+        indice+=1;
     }
 
     return textoPagina;
