@@ -5,7 +5,7 @@ const fetchArticles = async () => {
     let page = 1;
 
     try {
-        while (page <= 7) {
+        while (page <= 1) {
             let htmlString = await fetch(`https://encuentro.migracionescomunicativas.cl/wp-json/wp/v2/posts/?paged=${page}`)
                 .then(response => response.text());
 

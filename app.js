@@ -5,13 +5,13 @@ const BaileysProvider = require('@bot-whatsapp/provider/baileys');
 const MockAdapter = require('@bot-whatsapp/database/mock');
 
 const { fetchArticles, processArticles } = require('./articulos.js'); // Ajusta la ruta según tu estructura de archivos
+var i = 1
 
 const main = async () => {
     const arregloArticulos = await fetchArticles();
     const textoPagina = processArticles(arregloArticulos);
     
     console.log(textoPagina);
-    var i = 0
 
     // Nuevo flujo para enviar elementos de un array
 
@@ -25,21 +25,24 @@ const main = async () => {
         (ctx) => {
             console.log('mensaje recibido: ', ctx.body, ' y ', i)
             if(!isNaN(ctx.body)){
-                i = +ctx.body
+                i = parseInt(ctx.body)
             }
             console.log('mensaje recibido: ', ctx.body, ' y ', i)
         },
         [flowTerciario])
 
-    const flowEnviarArray = addKeyword([(i+1).toString()]).addAnswer(
-        [{media: textoPagina[i].src},
-        textoPagina[i].fragmentoTitulo,
-        'Mande *'+ (i+1) +'* para más'],
+    const flowEnviarArray = addKeyword([(1).toString()]).addAnswer(
+        {capture: true},
+        async (ctx, {provider}) => {
+            await provider.sendImage(ctx.from+'@s.whatsapp.net',
+            textoPagina[1].src, 
+            '*'+textoPagina[1].fragmentoTitulo+'*')
+        }).addAnswer( 'Mande *'+ (1) +'* para más',
         {capture:true},
         (ctx) => {
             console.log('mensaje recibido: ', ctx.body, ' y ', i)
             if(!isNaN(ctx.body)){
-                i = +ctx.body
+                i = parseInt(ctx.body)
             }
             console.log('mensaje recibido: ', ctx.body, ' y ', i)
         },
@@ -51,14 +54,27 @@ const main = async () => {
         .addAnswer(
                 'iniciar primer flujo',
                 null,
-                async (ctx, {flowDynamic}) => {
-                    const nuevoArreglo = textoPagina.map(({ indice, fragmentoTitulo, fragmentoLink }) => ({
+                async (ctx, {provider, flowDynamic}) => {
+                    const nuevoArreglo = textoPagina.map(({ indice, fragmentoTitulo, src }) => ({
                         indice,
                         fragmentoTitulo,
-                        fragmentoLink,
+                        src,
                     }))
-                    await flowDynamic(nuevoArreglo)
-                })
+                    for (const e of nuevoArreglo){
+                        console.log(e);
+                        await flowDynamic(e.indice+" - *"+e.fragmentoTitulo+'* \n '+ e.src);
+                    }
+                }).addAnswer('Ingrese número:',
+                /*{capture:true},
+                (ctx) => {
+                    console.log('mensaje recibido: ', ctx.body, ' y ', i)
+                    if(!isNaN(ctx.body)){
+                        i = parseInt(ctx.body)
+                    }
+                    console.log('mensaje recibido: ', ctx.body, ' y ', i)
+                },*/
+                [flowEnviarArray]
+                )
                 
     const adapterDB = new MockAdapter();
     const adapterFlow = createFlow([flowPrincipal]);
