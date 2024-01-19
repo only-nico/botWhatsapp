@@ -29,7 +29,6 @@ const fetchArticles = async () => {
 const processArticles = (arregloArticulos) => {
     const textoPagina = [];
     var indice = 1;
-
     for (const elem of arregloArticulos) {
         const { document } = new JSDOM(elem).window;
 
@@ -49,20 +48,77 @@ const processArticles = (arregloArticulos) => {
 
         // Verifica si el elemento img existe antes de intentar acceder al atributo src
         const src = imgElement ? imgElement.getAttribute('src') : null;
-
+        console.log(fragmentoLink+" "+fragmentoTexto+" "+fragmentoTitulo+" "+src)
         // Imprime el fragmento de texto y el atributo src (si existe)
-        textoPagina.push({
-            fragmentoTitulo,
-            fragmentoTexto,
-            fragmentoLink,
-            src,
-            indice
-        });
+        if (fragmentoTitulo !== null && fragmentoLink !== null && fragmentoTexto !== null && src !== null) {
+            textoPagina.push({
+                fragmentoTitulo,
+                fragmentoTexto,
+                fragmentoLink,
+                src,
+                indice
+            });
         indice+=1;
-    }
-
+        }
+        console.log(textoPagina.length)
+    }   
     return textoPagina;
+}
+
+const processText = async (Link) => {
+    try {
+        const newDocument = await fetchAndParseHTML(Link);
+
+        if (!newDocument) {
+            console.error('Error al obtener y parsear el HTML.');
+            return null;
+        }
+
+        const entryContentDiv = newDocument.querySelector('.entry-content.clear');
+
+        if (!entryContentDiv) {
+            console.error('No se encontró el div .entry-content.clear.');
+            return null;
+        }
+
+        // Obtener todos los elementos p dentro del div
+        const paragraphs = entryContentDiv.querySelectorAll('p');
+
+        // Verificar si hay párrafos antes de continuar
+        if (!paragraphs || paragraphs.length === 0) {
+            console.error('No se encontraron párrafos dentro del div.');
+            return null;
+        }
+
+        // Recorrer los elementos p y obtener su texto
+        const textArray = [];
+        paragraphs.forEach(paragraph => {
+            const texto = paragraph.textContent.trim();
+            textArray.push(texto);
+        });
+
+        // Retornar el array de textos
+        return textArray;
+    } catch (error) {
+        console.error('Error en la función processText:', error);
+        return null;
+    }
+};
+
+const fetchAndParseHTML = async (url) => {
+    try {
+        const htmlString = await fetch(url)
+            .then(response => response.text());
+
+        const { window } = new JSDOM(htmlString);
+        const doc = window.document;
+
+        return doc;
+    } catch (error) {
+        console.error('Error al obtener y parsear el HTML:', error);
+        return null;
+    }
 };
 
 
-module.exports = { fetchArticles, processArticles };
+module.exports = { fetchArticles, processArticles,processText };
