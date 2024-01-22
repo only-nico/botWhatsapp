@@ -48,7 +48,6 @@ const processArticles = (arregloArticulos) => {
 
         // Verifica si el elemento img existe antes de intentar acceder al atributo src
         const src = imgElement ? imgElement.getAttribute('src') : null;
-        console.log(fragmentoLink+" "+fragmentoTexto+" "+fragmentoTitulo+" "+src)
         // Imprime el fragmento de texto y el atributo src (si existe)
         if (fragmentoTitulo !== null && fragmentoLink !== null && fragmentoTexto !== null && src !== null) {
             textoPagina.push({
@@ -60,7 +59,6 @@ const processArticles = (arregloArticulos) => {
             });
         indice+=1;
         }
-        console.log(textoPagina.length)
     }   
     return textoPagina;
 }
