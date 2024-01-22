@@ -4,7 +4,7 @@ const QRPortalWeb = require('@bot-whatsapp/portal');
 const BaileysProvider = require('@bot-whatsapp/provider/baileys');
 const MockAdapter = require('@bot-whatsapp/database/mock');
 
-const { fetchArticles, processArticles, processText } = require('./articulos.js'); // Ajusta la ruta según tu estructura de archivos
+const { fetchArticles, processArticles } = require('./articulos.js'); // Ajusta la ruta según tu estructura de archivos
 
 const miURL = 'https://encuentro.migracionescomunicativas.cl/wp-json/wp/v2/posts/';
 const main = async () => {
@@ -20,51 +20,51 @@ const main = async () => {
 
     const flowTerciario = addKeyword('2',  { sensitive: true }).addAction(
         async (_, {flowDynamic}) => {
-            console.log(textoPagina[i-1].fragmentoLink)
-            return await flowDynamic('mas información: '+ textoPagina[i-1].fragmentoLink);
-        }).addAnswer('ingrese *reset* para reiniciar')
+
+            return await flowDynamic('mas información: '+ textoPagina[i-1].fragmentoLink+'\n\nIngrese *reset* para reiniciar');
+        })
         
     const flowSecundario = addKeyword('1', { sensitive: true }).addAction(
         async (_, {flowDynamic}) => {
-            console.log(textoPagina[i-1].fragmentoTexto)
-            return await flowDynamic(textoPagina[i-1].fragmentoTexto);
-        })
-        .addAnswer(
-        'Mande *2* para más \nMande *reset* para reiniciar',
-        {delay:10000},
-        [flowTerciario])
+            return await flowDynamic(textoPagina[i-1].fragmentoTexto+"\n\nMande *2* para más \nMande *reset* para reiniciar");
+        },[flowTerciario])
+        
 
     const flowEnviarArray = addKeyword('0', { sensitive: true })
-        .addAnswer(
-        'Mande *1* para más \nMande *reset* para reiniciar',
-        {delay:5000}
-        ,[flowSecundario]
-    ).addAction(
+        .addAction(
         async (_, {flowDynamic}) => {
-            console.log(textoPagina[i-1].fragmentoTitulo)
-            return await flowDynamic({
-                body: textoPagina[i-1].fragmentoTitulo,
-                media: {media:'https://www.sammobile.com/wp-content/uploads/2021/06/samantha_3.jpg'}}
-                );
-        })
+            await flowDynamic([{
+                body: textoPagina[i-1].fragmentoTitulo + "\n\nMande *1* para más \nMande *reset* para reiniciar",
+                media: textoPagina[i-1].src
+        }]);
+        },[flowSecundario])
+        
 
     const flowPrincipal2=addKeyword(["iniciar","reset"]).addAnswer(
         'generando artículos...',
         {delay:1000},
         async (ctx, {provider, flowDynamic}) => {
-            const nuevoArreglo = textoPagina.map(({ indice, fragmentoTitulo, src }) => ({
-                indice,
-                fragmentoTitulo,
-                src,
-            }))
-            for (const e of nuevoArreglo){
+            
+            for (let index = 0; index < textoPagina.length; index++) {
+                const e = textoPagina[index];
+                let bodyMessage;
+                
+                // Verificar si es la última iteración
+                if (index === textoPagina.length - 1) {
+                    bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n\nIngrese el índice del artículo:";
+                } else {
+                    bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
+                }
+            
                 await flowDynamic([
-                    
-                        e.indice+" - *"+e.fragmentoTitulo+'* \n '+ e.src
-                    
+                    {
+                        body: bodyMessage,
+                        media: e.src
+                    }
                 ]);
             }
-        }).addAnswer('Ingrese el índice del artículo:',
+            
+        }).addAction(
         {capture:true},
         async (ctx, { gotoFlow }) => {
             if (!isNaN(ctx.body)) {
@@ -75,7 +75,7 @@ const main = async () => {
     )
     const flowPrincipal = addKeyword('hola', {sensitive:true})
         .addAnswer('🙌 Bienvenido, mi nombre es *Lara*',
-        {media:'https://www.sammobile.com/wp-content/uploads/2021/06/samantha_3.jpg'})
+        {media:'https://i.pinimg.com/originals/f4/7c/59/f47c59a85004cfed5655f69faca5341d.jpg'})
         .addAnswer('Ingrese *iniciar* para comenzar a utilizar el bot:',
                 {capture:true},
                 async (ctx, { gotoFlow }) => {

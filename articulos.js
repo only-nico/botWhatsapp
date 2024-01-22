@@ -119,4 +119,4 @@ const fetchAndParseHTML = async (url) => {
 };
 
 
-module.exports = { fetchArticles, processArticles,processText };
+module.exports = { fetchArticles, processArticles };
