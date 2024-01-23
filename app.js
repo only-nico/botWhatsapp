@@ -11,12 +11,13 @@ const main = async () => {
     const arregloArticulos = await fetchArticles(miURL);
     const textoPagina = processArticles(arregloArticulos);
     let i = 1
+    let contador=0
     process.on('unhandledRejection', (reason, promise) => {
         console.error('Unhandled Rejection at:', promise, 'reason:', reason);
         // Puedes hacer algo adicional aquí si es necesario
     });
     const arregloAleatorio = [];
-    const indicesUsados = [];
+    const indicesUsados=[];
     for (let index = 0; index < 6; index++) {
         let numeroEnteroAleatorio;
     
@@ -85,8 +86,8 @@ const main = async () => {
         async (ctx, { gotoFlow }) => {
             if (!isNaN(ctx.body)) {
                 i = parseInt(ctx.body);
+                return gotoFlow(flowEnviarArray);
             }
-            return gotoFlow(flowEnviarArray);
         }
     )
     const flowPrincipal3=addKeyword(["reset"],{sensitive:true}).addAnswer(
@@ -94,9 +95,14 @@ const main = async () => {
         {delay:1000},
         async (ctx, {provider, flowDynamic}) => {
             arregloAleatorio.splice(0, arregloAleatorio.length);
+            contador+=1;
+            console.log(indicesUsados);
+            if(contador==3){
+                indicesUsados.splice(0, indicesUsados.length);
+                contador=0;
+            }
             for (let index = 0; index < 6; index++) {
                 let numeroEnteroAleatorio;
-            
                 // Generar un índice aleatorio que no se haya usado antes
                 do {
                     numeroEnteroAleatorio = Math.floor(Math.random() * textoPagina.length);
@@ -132,8 +138,8 @@ const main = async () => {
         async (ctx, { gotoFlow }) => {
             if (!isNaN(ctx.body)) {
                 i = parseInt(ctx.body);
-            }
-            return gotoFlow(flowEnviarArray);
+                return gotoFlow(flowEnviarArray);
+            } 
         }
     )
     const flowPrincipal = addKeyword('hola', {sensitive:true})
@@ -147,7 +153,6 @@ const main = async () => {
                         i = parseInt(ctx.body);
                     }
                     console.log('mensaje recibido: ', ctx.body, ' y ', i);
-                    return gotoFlow(flowPrincipal2);
                 }
             )
     const adapterDB = new MockAdapter();
