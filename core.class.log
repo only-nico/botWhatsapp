@@ -2,10 +2,10 @@
   key: {
     remoteJid: '56963754310@s.whatsapp.net',
     fromMe: false,
-    id: 'B2AAB5FFE153ED9497',
+    id: '9E64A4C474630295A6',
     participant: undefined
   },
-  messageTimestamp: 1705942470,
+  messageTimestamp: 1706014109,
   pushName: 'luciano',
   broadcast: false,
   message: Message {
@@ -19,8 +19,8 @@
   from: '56963754310'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_522afd50-3c02-46d8-8746-ae6b1745869d',
-  keyword: 'key_bfa5e5f7-af7d-4624-92a9-ffd533325240',
+  ref: 'ans_b3842577-f95c-4c7b-a0f2-d1bbd6fc2c3f',
+  keyword: 'key_7615c605-6f91-4387-ade1-dde8b7e45055',
   answer: '🙌 Bienvenido, mi nombre es *Lara*',
   options: {
     media: 'https://i.pinimg.com/originals/f4/7c/59/f47c59a85004cfed5655f69faca5341d.jpg',
@@ -34,12 +34,12 @@
     keyword: {},
     callback: false
   },
-  refSerialize: '5c479044523b23f1e94906db193e08c7'
+  refSerialize: '4e25a70c6dc3fe7aa0974df114749038'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_12e222f5-0ab1-4bb4-84a4-278960a260b9',
-  keyword: 'ans_522afd50-3c02-46d8-8746-ae6b1745869d',
-  answer: '\nIngrese *iniciar* para comenzar a utilizar el bot:',
+  ref: 'ans_fe524d43-4205-463d-a13f-77633b8a9888',
+  keyword: 'ans_b3842577-f95c-4c7b-a0f2-d1bbd6fc2c3f',
+  answer: 'Ingrese *iniciar* para comenzar a utilizar el bot:',
   options: {
     media: null,
     buttons: [],
@@ -52,5 +52,273 @@
     keyword: {},
     callback: true
   },
-  refSerialize: 'de794aa7effd0dfc38b5810ca06327ad'
+  refSerialize: 'c37262ac8847799a5b68209d9e7d170d'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: '040E0452DCBA6B0AAC',
+    participant: undefined
+  },
+  messageTimestamp: 1706014117,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'iniciar', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'iniciar',
+  from: '56963754310'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: 'F63EE8E65E79DC6A50',
+    participant: undefined
+  },
+  messageTimestamp: 1706014138,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'reset', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'reset',
+  from: '56963754310'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: 'E057B237992F29F9BA',
+    participant: undefined
+  },
+  messageTimestamp: 1706014183,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'reset', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'reset',
+  from: '56963754310'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f3368990-56f1-4282-b0e9-b0eef2566c18',
+  keyword: 'key_07c4a412-7155-433a-9e32-56c2291ede78',
+  answer: 'generando artículos...',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '29b77e91a6b6e9aca42d6e24767fc508'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_a521b34c-85b0-4c69-a102-0ece1d06cf33',
+  keyword: 'ans_f3368990-56f1-4282-b0e9-b0eef2566c18',
+  answer: '__capture_only_intended__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '72c720cc2eaa7d4313ea27dcef76526a'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: 'FA8A17A9B6FF480236',
+    participant: undefined
+  },
+  messageTimestamp: 1706014195,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'reset', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'reset',
+  from: '56963754310'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: '9BB9CB50201A942C66',
+    participant: undefined
+  },
+  messageTimestamp: 1706014202,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'reset', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'reset',
+  from: '56963754310'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f3368990-56f1-4282-b0e9-b0eef2566c18',
+  keyword: 'key_07c4a412-7155-433a-9e32-56c2291ede78',
+  answer: 'generando artículos...',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '29b77e91a6b6e9aca42d6e24767fc508'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_a521b34c-85b0-4c69-a102-0ece1d06cf33',
+  keyword: 'ans_f3368990-56f1-4282-b0e9-b0eef2566c18',
+  answer: '__capture_only_intended__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '72c720cc2eaa7d4313ea27dcef76526a'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: 'A2B22F3E716A39F510',
+    participant: undefined
+  },
+  messageTimestamp: 1706014213,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: '14', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '14',
+  from: '56963754310'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: '97D6F3660BB9D37A22',
+    participant: undefined
+  },
+  messageTimestamp: 1706014218,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'reset', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'reset',
+  from: '56963754310'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f3368990-56f1-4282-b0e9-b0eef2566c18',
+  keyword: 'key_07c4a412-7155-433a-9e32-56c2291ede78',
+  answer: 'generando artículos...',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '29b77e91a6b6e9aca42d6e24767fc508'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_a521b34c-85b0-4c69-a102-0ece1d06cf33',
+  keyword: 'ans_f3368990-56f1-4282-b0e9-b0eef2566c18',
+  answer: '__capture_only_intended__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '72c720cc2eaa7d4313ea27dcef76526a'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56963754310@s.whatsapp.net',
+    fromMe: false,
+    id: '64B704C731BC414F17',
+    participant: undefined
+  },
+  messageTimestamp: 1706014231,
+  pushName: 'luciano',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage { text: 'reset', contextInfo: [ContextInfo] },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'reset',
+  from: '56963754310'
 }

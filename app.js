@@ -15,6 +15,22 @@ const main = async () => {
         console.error('Unhandled Rejection at:', promise, 'reason:', reason);
         // Puedes hacer algo adicional aquí si es necesario
     });
+    const arregloAleatorio = [];
+    const indicesUsados = [];
+    for (let index = 0; index < 6; index++) {
+        let numeroEnteroAleatorio;
+    
+        // Generar un índice aleatorio que no se haya usado antes
+        do {
+            numeroEnteroAleatorio = Math.floor(Math.random() * textoPagina.length);
+        } while (indicesUsados.includes(numeroEnteroAleatorio));
+    
+        // Guardar el índice para evitar repeticiones
+        indicesUsados.push(numeroEnteroAleatorio);
+    
+        // Añadir el elemento correspondiente al arregloAleatorio
+        arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
+    }
 
     // Nuevo flujo para enviar elementos de un array
 
@@ -40,17 +56,64 @@ const main = async () => {
         },[flowSecundario])
         
 
-    const flowPrincipal2=addKeyword(["iniciar","reset"]).addAnswer(
+    const flowPrincipal2=addKeyword(["iniciar","return"],{sensitive:true}).addAnswer(
         'generando artículos...',
         {delay:1000},
         async (ctx, {provider, flowDynamic}) => {
             
-            for (let index = 0; index < textoPagina.length; index++) {
-                const e = textoPagina[index];
+            for (let index = 0; index < arregloAleatorio.length; index++) {
+                const e = arregloAleatorio[index];
                 let bodyMessage;
                 
                 // Verificar si es la última iteración
-                if (index === textoPagina.length - 1) {
+                if (index === arregloAleatorio.length - 1) {
+                    bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n\nIngrese el índice del artículo:";
+                } else {
+                    bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
+                }
+            
+                await flowDynamic([
+                    {
+                        body: bodyMessage,
+                        media: e.src
+                    }
+                ]);
+            }
+            
+        }).addAction(
+        {capture:true},
+        async (ctx, { gotoFlow }) => {
+            if (!isNaN(ctx.body)) {
+                i = parseInt(ctx.body);
+            }
+            return gotoFlow(flowEnviarArray);
+        }
+    )
+    const flowPrincipal3=addKeyword(["reset"],{sensitive:true}).addAnswer(
+        'generando artículos...',
+        {delay:1000},
+        async (ctx, {provider, flowDynamic}) => {
+            arregloAleatorio.splice(0, arregloAleatorio.length);
+            for (let index = 0; index < 6; index++) {
+                let numeroEnteroAleatorio;
+            
+                // Generar un índice aleatorio que no se haya usado antes
+                do {
+                    numeroEnteroAleatorio = Math.floor(Math.random() * textoPagina.length);
+                } while (indicesUsados.includes(numeroEnteroAleatorio));
+            
+                // Guardar el índice para evitar repeticiones
+                indicesUsados.push(numeroEnteroAleatorio);
+            
+                // Añadir el elemento correspondiente al arregloAleatorio
+                arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
+            }
+            for (let index = 0; index < arregloAleatorio.length; index++) {
+                const e = arregloAleatorio[index];
+                let bodyMessage;
+                
+                // Verificar si es la última iteración
+                if (index === arregloAleatorio.length - 1) {
                     bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n\nIngrese el índice del artículo:";
                 } else {
                     bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
@@ -88,7 +151,7 @@ const main = async () => {
                 }
             )
     const adapterDB = new MockAdapter();
-    const adapterFlow = createFlow([flowPrincipal,flowPrincipal2, flowEnviarArray, flowSecundario, flowTerciario]);
+    const adapterFlow = createFlow([flowPrincipal,flowPrincipal2,flowPrincipal3, flowEnviarArray, flowSecundario, flowTerciario]);
     const adapterProvider = createProvider(BaileysProvider);
 
     createBot({

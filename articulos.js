@@ -5,8 +5,8 @@ const fetchArticles = async () => {
     let page = 1;
 
     try {
-        while (page <= 1) {
-            let htmlString = await fetch(`https://encuentro.migracionescomunicativas.cl/wp-json/wp/v2/posts/?paged=${page}`)
+        while (page <= 10) {
+            let htmlString = await fetch(`https://encuentro.migracionescomunicativas.cl/wp-json/wp/v2/posts/?paged=${page}`,{ timeout: 15000 })
                 .then(response => response.text());
 
             const { window } = new JSDOM(htmlString);
