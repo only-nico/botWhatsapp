@@ -38,7 +38,7 @@ const main = async () => {
     const flowTerciario = addKeyword('2',  { sensitive: true }).addAction(
         async (_, {flowDynamic}) => {
 
-            return await flowDynamic('mas información: '+ textoPagina[i-1].fragmentoLink+'\n\nIngrese *reset* para reiniciar');
+            return await flowDynamic('mas información: '+ textoPagina[i-1].fragmentoLink+'\n\nIngrese *reset* para reiniciar o *return* para volver');
         })
         
     const flowSecundario = addKeyword('1', { sensitive: true }).addAction(
@@ -57,7 +57,7 @@ const main = async () => {
         },[flowSecundario])
         
 
-    const flowPrincipal2=addKeyword(["iniciar","return"],{sensitive:true}).addAnswer(
+    const flowPrincipal2=addKeyword(["iniciar","Iniciar","INICIAR","Return","RETURN","return"],{sensitive:true}).addAnswer(
         'generando artículos...',
         {delay:1000},
         async (ctx, {provider, flowDynamic}) => {
@@ -90,7 +90,7 @@ const main = async () => {
             }
         }
     )
-    const flowPrincipal3=addKeyword(["reset"],{sensitive:true}).addAnswer(
+    const flowPrincipal3=addKeyword(["reset","Reset","RESET"],{sensitive:true}).addAnswer(
         'generando artículos...',
         {delay:1000},
         async (ctx, {provider, flowDynamic}) => {
@@ -142,12 +142,12 @@ const main = async () => {
             } 
         }
     )
-    const flowPrincipal = addKeyword('hola', {sensitive:true})
+    const flowPrincipal = addKeyword('hola',"HOLA","Hola","OLA","Ola","ola","ALO","alo","Alo", {sensitive:true})
         .addAnswer('🙌 Bienvenido, mi nombre es *Lara*',
         {media:'https://i.pinimg.com/originals/f4/7c/59/f47c59a85004cfed5655f69faca5341d.jpg'})
         .addAnswer('Ingrese *iniciar* para comenzar a utilizar el bot:',
                 {capture:true},
-                async (ctx, { gotoFlow }) => {
+                (ctx) => {
                     console.log('mensaje recibido: ', ctx.body, ' y ', i);
                     if (!isNaN(ctx.body)) {
                         i = parseInt(ctx.body);
