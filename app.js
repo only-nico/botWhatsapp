@@ -3,19 +3,19 @@ const { createBot, createProvider, createFlow, addKeyword } = require('@bot-what
 const QRPortalWeb = require('@bot-whatsapp/portal');
 const BaileysProvider = require('@bot-whatsapp/provider/baileys');
 const MockAdapter = require('@bot-whatsapp/database/mock');
-
 const { fetchArticles, processArticles } = require('./articulos.js'); // Ajusta la ruta según tu estructura de archivos
 
 const miURL = 'https://encuentro.migracionescomunicativas.cl/wp-json/wp/v2/posts/';
 const main = async () => {
     const arregloArticulos = await fetchArticles(miURL);
     const textoPagina = processArticles(arregloArticulos);
-    let i = 1
+    let art = 1
+    let num = 0
     let contador=0
-    process.on('unhandledRejection', (reason, promise) => {
+    /*process.on('unhandledRejection', (reason, promise) => {
         console.error('Unhandled Rejection at:', promise, 'reason:', reason);
         // Puedes hacer algo adicional aquí si es necesario
-    });
+    });*/
     const arregloAleatorio = [];
     const indicesUsados=[];
     for (let index = 0; index < 6; index++) {
@@ -25,12 +25,10 @@ const main = async () => {
         do {
             numeroEnteroAleatorio = Math.floor(Math.random() * textoPagina.length);
         } while (indicesUsados.includes(numeroEnteroAleatorio));
-    
-        // Guardar el índice para evitar repeticiones
-        indicesUsados.push(numeroEnteroAleatorio);
-    
-        // Añadir el elemento correspondiente al arregloAleatorio
-        arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
+            // Guardar el índice para evitar repeticiones
+            indicesUsados.push(numeroEnteroAleatorio);
+            // Añadir el elemento correspondiente al arregloAleatorio
+            arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
     }
 
     // Nuevo flujo para enviar elementos de un array
@@ -38,12 +36,12 @@ const main = async () => {
     const flowTerciario = addKeyword('2',  { sensitive: true }).addAction(
         async (_, {flowDynamic}) => {
 
-            return await flowDynamic('mas información: '+ textoPagina[i-1].fragmentoLink+'\n\nIngrese *reset* para reiniciar o *return* para volver');
+            return await flowDynamic('mas información: '+ textoPagina[art-1].fragmentoLink+'\n\nIngrese *reset* para reiniciar o *return* para volver');
         })
         
     const flowSecundario = addKeyword('1', { sensitive: true }).addAction(
         async (_, {flowDynamic}) => {
-            return await flowDynamic(textoPagina[i-1].fragmentoTexto+"\n\nMande *2* para más \nMande *reset* para reiniciar");
+            return await flowDynamic(textoPagina[art-1].fragmentoTexto+"\n\nMande *2* para más \nMande *reset* para reiniciar");
         },[flowTerciario])
         
 
@@ -51,8 +49,8 @@ const main = async () => {
         .addAction(
         async (_, {flowDynamic}) => {
             await flowDynamic([{
-                body: textoPagina[i-1].fragmentoTitulo + "\n\nMande *1* para más \nMande *reset* para reiniciar",
-                media: textoPagina[i-1].src
+                body: textoPagina[art-1].fragmentoTitulo + "\n\nMande *1* para más \nMande *reset* para reiniciar",
+                media: textoPagina[art-1].src
         }]);
         },[flowSecundario])
         
@@ -60,8 +58,7 @@ const main = async () => {
     const flowPrincipal2=addKeyword(["iniciar","Iniciar","INICIAR","Return","RETURN","return"],{sensitive:true}).addAnswer(
         'generando artículos...',
         {delay:1000},
-        async (ctx, {provider, flowDynamic}) => {
-            
+        async (ctx, {provider, flowDynamic, state}) => {
             for (let index = 0; index < arregloAleatorio.length; index++) {
                 const e = arregloAleatorio[index];
                 let bodyMessage;
@@ -84,10 +81,13 @@ const main = async () => {
         }).addAction(
         {capture:true},
         async (ctx, { gotoFlow }) => {
-            if (!isNaN(ctx.body)) {
-                i = parseInt(ctx.body);
+            console.log('mensaje recibido: ', ctx.body, ' y ', art);
+            if (!isNaN(ctx.body) && indicesUsados.includes(parseInt(ctx.body)-1)) {
+                console.log(indicesUsados.includes(parseInt(ctx.body)-1))
+                art = parseInt(ctx.body);
                 return gotoFlow(flowEnviarArray);
             }
+            console.log('mensaje recibido: ', ctx.body, ' y ', art);
         }
     )
     const flowPrincipal3=addKeyword(["reset","Reset","RESET"],{sensitive:true}).addAnswer(
@@ -124,37 +124,39 @@ const main = async () => {
                 } else {
                     bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
                 }
-            
+                try{
                 await flowDynamic([
                     {
                         body: bodyMessage,
                         media: e.src
                     }
-                ]);
+                ])}
+                catch (error) {
+                    console.error('Error durante la ejecución de flowDynamic:', error);
+                }
             }
             
-        }).addAction(
+        }).addAction('',
         {capture:true},
-        async (ctx, { gotoFlow }) => {
-            if (!isNaN(ctx.body)) {
-                i = parseInt(ctx.body);
+        async (ctx, { gotoFlow, fallBack }) => {
+            if (!isNaN(ctx.body) && indicesUsados.includes(parseInt(ctx.body)-1)) {
+                console.log(indicesUsados.includes(parseInt(ctx.body)-1))
+                art = parseInt(ctx.body);
                 return gotoFlow(flowEnviarArray);
-            } 
+            }
+            else return fallBack();
         }
     )
     const flowPrincipal = addKeyword('hola',"HOLA","Hola","OLA","Ola","ola","ALO","alo","Alo", {sensitive:true})
-        .addAnswer('🙌 Bienvenido, mi nombre es *Lara*',
-        {media:'https://i.pinimg.com/originals/f4/7c/59/f47c59a85004cfed5655f69faca5341d.jpg'})
-        .addAnswer('Ingrese *iniciar* para comenzar a utilizar el bot:',
-                {capture:true},
-                (ctx) => {
-                    console.log('mensaje recibido: ', ctx.body, ' y ', i);
-                    if (!isNaN(ctx.body)) {
-                        i = parseInt(ctx.body);
-                    }
-                    console.log('mensaje recibido: ', ctx.body, ' y ', i);
+        .addAction(async (ctx,{flowDynamic})=>{
+            await flowDynamic([
+                {
+                    body: '🙌 Bienvenido '+ctx.pushName+', mi nombre es *Lara*',
+                    media:'https://i.pinimg.com/originals/f4/7c/59/f47c59a85004cfed5655f69faca5341d.jpg'
                 }
-            )
+            ])})
+        .addAnswer('Ingrese *iniciar* para comenzar a utilizar el bot')
+
     const adapterDB = new MockAdapter();
     const adapterFlow = createFlow([flowPrincipal,flowPrincipal2,flowPrincipal3, flowEnviarArray, flowSecundario, flowTerciario]);
     const adapterProvider = createProvider(BaileysProvider);

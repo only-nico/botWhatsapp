@@ -1,29 +1,47 @@
 [handleMsg]:  {
   key: {
-    remoteJid: '56963754310@s.whatsapp.net',
+    remoteJid: '56958349134@s.whatsapp.net',
     fromMe: false,
-    id: 'C48D6AD706582FAAF4',
+    id: '3AC983F5BB86E4AB534A',
     participant: undefined
   },
-  messageTimestamp: 1706027436,
-  pushName: 'luciano',
+  messageTimestamp: 1706115830,
+  pushName: 'Nico',
   broadcast: false,
   message: Message {
-    extendedTextMessage: ExtendedTextMessage { text: 'hola', contextInfo: [ContextInfo] },
+    conversation: 'hola',
     messageContextInfo: MessageContextInfo {
       deviceListMetadata: [DeviceListMetadata],
       deviceListMetadataVersion: 2
     }
   },
   body: 'hola',
-  from: '56963754310'
+  from: '56958349134'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_192542bd-2b04-4959-8148-86050d769dee',
-  keyword: 'key_0b55920c-6877-4c85-8463-99893d02824e',
-  answer: '🙌 Bienvenido, mi nombre es *Lara*',
+  ref: 'ans_f76d7985-7325-40b0-896d-b012318149ea',
+  keyword: 'key_c5d7956c-c063-4130-8056-1db04aaad65d',
+  answer: '__call_action__',
   options: {
-    media: 'https://i.pinimg.com/originals/f4/7c/59/f47c59a85004cfed5655f69faca5341d.jpg',
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '83f0d9bb328cf513234fb21e0e47152c'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f7ff0272-225f-45c6-83e9-92cd4eb13c3d',
+  keyword: 'ans_f76d7985-7325-40b0-896d-b012318149ea',
+  answer: 'Ingrese *iniciar* para comenzar a utilizar el bot',
+  options: {
+    media: null,
     buttons: [],
     capture: false,
     child: null,
@@ -34,175 +52,5 @@
     keyword: {},
     callback: false
   },
-  refSerialize: 'a093e7497640afe9ee550a973492a146'
-}
-[QUEUE_SE_ENVIO]:  {
-  ref: 'ans_2d39f4b7-4633-4288-9f0f-7837e14619d4',
-  keyword: 'ans_192542bd-2b04-4959-8148-86050d769dee',
-  answer: 'Ingrese *iniciar* para comenzar a utilizar el bot:',
-  options: {
-    media: null,
-    buttons: [],
-    capture: true,
-    child: null,
-    delay: 0,
-    idle: null,
-    ref: null,
-    nested: [],
-    keyword: {},
-    callback: true
-  },
-  refSerialize: 'a6eb8068d7d50ae43b83e39b4133bdc6'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '56963754310@s.whatsapp.net',
-    fromMe: false,
-    id: 'D923D604F3B83A6032',
-    participant: undefined
-  },
-  messageTimestamp: 1706027441,
-  pushName: 'luciano',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage { text: 'iniciar', contextInfo: [ContextInfo] },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: 'iniciar',
-  from: '56963754310'
-}
-[QUEUE_SE_ENVIO]:  {
-  ref: 'ans_d534afc8-f5ec-43ca-bbd4-9de298f5f2f1',
-  keyword: 'key_e3c6bbfa-5c14-4114-8807-0632a8d1efe3',
-  answer: 'generando artículos...',
-  options: {
-    media: null,
-    buttons: [],
-    capture: false,
-    child: null,
-    delay: 1000,
-    idle: null,
-    ref: null,
-    nested: [],
-    keyword: {},
-    callback: true
-  },
-  refSerialize: '598d83e5c266cf886b508047eed0c40b'
-}
-[QUEUE_SE_ENVIO]:  {
-  ref: 'ans_cfb5bb44-ed19-4f2e-a940-1b8349c5ab40',
-  keyword: 'ans_d534afc8-f5ec-43ca-bbd4-9de298f5f2f1',
-  answer: '__capture_only_intended__',
-  options: {
-    media: null,
-    buttons: [],
-    capture: true,
-    child: null,
-    delay: 0,
-    idle: null,
-    ref: null,
-    nested: [],
-    keyword: {},
-    callback: true
-  },
-  refSerialize: 'c42b43acb490020cf882d2ebf6ba201b'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '56963754310@s.whatsapp.net',
-    fromMe: false,
-    id: 'C1477222B8E3F6EF82',
-    participant: undefined
-  },
-  messageTimestamp: 1706027454,
-  pushName: 'luciano',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage { text: '23', contextInfo: [ContextInfo] },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: '23',
-  from: '56963754310'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '56963754310@s.whatsapp.net',
-    fromMe: false,
-    id: 'DCB0843BBC685EBE55',
-    participant: undefined
-  },
-  messageTimestamp: 1706027458,
-  pushName: 'luciano',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage { text: '1', contextInfo: [ContextInfo] },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: '1',
-  from: '56963754310'
-}
-[QUEUE_SE_ENVIO]:  {
-  ref: 'ans_b1f30096-1e7f-4805-b893-571ecbafd9fb',
-  keyword: 'key_016fc612-644e-4e60-9f15-8086e6c7a06c',
-  answer: '__call_action__',
-  options: {
-    media: null,
-    buttons: [],
-    capture: false,
-    child: null,
-    delay: 0,
-    idle: null,
-    ref: null,
-    nested: [],
-    keyword: {},
-    callback: true
-  },
-  refSerialize: '06d7286d8663b043c894d00df1c76257'
-}
-[handleMsg]:  {
-  key: {
-    remoteJid: '56963754310@s.whatsapp.net',
-    fromMe: false,
-    id: 'E98AF55CD02B52046A',
-    participant: undefined
-  },
-  messageTimestamp: 1706027460,
-  pushName: 'luciano',
-  broadcast: false,
-  message: Message {
-    extendedTextMessage: ExtendedTextMessage { text: '2', contextInfo: [ContextInfo] },
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: '2',
-  from: '56963754310'
-}
-[QUEUE_SE_ENVIO]:  {
-  ref: 'ans_2636a38b-42ae-46b8-8b84-66517871cb4a',
-  keyword: 'key_7b4bb02a-5c5e-4fac-bfd7-3bef976b6a73',
-  answer: '__call_action__',
-  options: {
-    media: null,
-    buttons: [],
-    capture: false,
-    child: null,
-    delay: 0,
-    idle: null,
-    ref: null,
-    nested: [],
-    keyword: {},
-    callback: true
-  },
-  refSerialize: '37ca5919cbd364ec5418f07d012fd36f'
+  refSerialize: '6f98c9297a1f351b5c0cdfeda5443b5c'
 }
