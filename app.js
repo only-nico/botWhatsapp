@@ -1,10 +1,87 @@
 
+require('./firebase/config.js');
+const {
+  getFirestore,
+  doc,
+  collection,
+  getDocs,updateDoc,
+  getDoc,setDoc
+} = require('firebase/firestore');
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot');
 const QRPortalWeb = require('@bot-whatsapp/portal');
 const BaileysProvider = require('@bot-whatsapp/provider/baileys');
 const MockAdapter = require('@bot-whatsapp/database/mock');
 const { fetchArticles, processArticles } = require('./articulos.js'); // Ajusta la ruta según tu estructura de archivos
+const cantidad=6;
+const database=getFirestore();
 
+const verificarUsuario = async (contexto) => {
+// Obtén todos los usuarios
+
+    const resultado = await getDocs(collection(database, 'usuarios'));
+
+    // Recorre los usuarios
+    for (let doc of resultado.docs) {
+        let usuario = doc.data();
+
+        // Comprueba si el número de Whatsapp coincide
+        if (usuario.numeroWhatsapp === contexto.from) {
+        console.log('Usuario encontrado:', usuario);
+        return usuario;
+        }}
+    let nuevoUsuario = {
+        numero: '50',
+        nombre: contexto.pushName,
+        numeroWhatsapp: contexto.from,
+        arregloActual: [ ]
+        };
+    const usuarioRef = doc(database, 'usuarios', nuevoUsuario.numeroWhatsapp);
+    await setDoc(usuarioRef,nuevoUsuario);
+    console.log('Usuario agregado a la base de datos.');
+    return nuevoUsuario;
+    
+};
+const actualizarUsuario = async (contexto, campo, nuevoValor) => {
+    // Obtén todos los usuarios
+    const resultado = await getDocs(collection(database, 'usuarios'));
+  
+    // Recorre los usuarios
+    for (let doc of resultado.docs) {
+      let usuario = doc.data();
+  
+      // Comprueba si el número de Whatsapp coincide
+      if (usuario.numeroWhatsapp === contexto) {
+        console.log('Usuario encontrado:', usuario);
+        
+        // Actualiza el campo específico
+        const usuarioRef = doc(database, 'usuarios', usuario.numeroWhatsapp);
+        let camposParaActualizar = { [campo]: nuevoValor };
+        await updateDoc(usuarioRef, camposParaActualizar);
+        console.log('Campo actualizado.');
+        
+        // Retorna el usuario actualizado
+        return { ...usuario, [campo]: nuevoValor };
+      }
+    }
+  
+    // Si el usuario no se encontró, imprime un mensaje
+    console.log('Usuario no encontrado.');
+    return null;
+  };
+  
+function agregarNumerosAleatorios(array,tamaño) {
+    let copiaArray = [...array]; // Crea una copia del array original
+    for (let i = 0; i < cantidad; i++) {
+        let numeroAleatorio;
+        do {
+        numeroAleatorio = Math.floor(Math.random() * tamaño); // Genera un número aleatorio entre 0 y 999
+        } while (copiaArray.includes(numeroAleatorio));
+        copiaArray[i] = numeroAleatorio; // Reemplaza el número en el índice 'i' con el número aleatorio
+    }
+    return copiaArray;
+    }
+
+  
 const miURL = 'https://encuentro.migracionescomunicativas.cl/wp-json/wp/v2/posts/';
 const main = async () => {
     const arregloArticulos = await fetchArticles(miURL);
@@ -12,13 +89,14 @@ const main = async () => {
     let art = 1
     let num = 0
     let contador=0
-    process.on('unhandledRejection', (reason, promise) => {
+    let user;
+    /*process.on('unhandledRejection', (reason, promise) => {
         console.error('Unhandled Rejection at:', promise, 'reason:', reason);
         // Puedes hacer algo adicional aquí si es necesario
-    });
+    });*/
     const arregloAleatorio = [];
     const indicesUsados=[];
-    for (let index = 0; index < 6; index++) {
+    for (let index = 0; index < cantidad; index++) {
         let numeroEnteroAleatorio;
     
         // Generar un índice aleatorio que no se haya usado antes
@@ -30,6 +108,7 @@ const main = async () => {
             // Añadir el elemento correspondiente al arregloAleatorio
             arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
     }
+    
 
     // Nuevo flujo para enviar elementos de un array
 
@@ -61,8 +140,9 @@ const main = async () => {
         'generando artículos...',
         {delay:1000},
         async (_, {provider, flowDynamic}) => {
-            for (let index = 0; index < arregloAleatorio.length; index++) {
-                const e = arregloAleatorio[index];
+            
+            for (let index = 0; index < user.arregloActual.length; index++) {
+                const e = textoPagina[user.arregloActual[index]];
                 let bodyMessage;
                 
                 // Verificar si es la última iteración
@@ -155,6 +235,18 @@ const main = async () => {
     )
     const flowPrincipal = addKeyword('hola',"HOLA","Hola","OLA","Ola","ola","ALO","alo","Alo", {sensitive:true})
         .addAction(async (ctx,{flowDynamic})=>{
+            user= await verificarUsuario(ctx);
+            console.log(user.arregloActual);
+            const arreglo=agregarNumerosAleatorios(user.arregloActual,textoPagina.length)
+            console.log(arreglo)
+            actualizarUsuario(user.numeroWhatsapp, arregloActual, arreglo)
+            .then(userActualizado => {
+                console.log(userActualizado);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            console.log("aca");
             await flowDynamic([
                 {
                     body: '🙌 Bienvenido '+ctx.pushName+', mi nombre es *Lara*',

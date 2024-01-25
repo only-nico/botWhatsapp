@@ -1,20 +1,29 @@
 [handleMsg]:  {
   key: {
-    remoteJid: '56958349134@s.whatsapp.net',
+    remoteJid: '56963754310@s.whatsapp.net',
     fromMe: false,
-    id: '3EB06F00F9A25A5300A1E7',
+    id: '77DABF397E23B77E9243D748292627E7',
     participant: undefined
   },
-  messageTimestamp: 1706189511,
-  pushName: 'Nico',
+  messageTimestamp: 1706202467,
+  pushName: 'luciano',
   broadcast: false,
   message: Message {
-    conversation: 'reset',
+    conversation: 'hola',
     messageContextInfo: MessageContextInfo {
       deviceListMetadata: [DeviceListMetadata],
       deviceListMetadataVersion: 2
     }
   },
-  body: 'reset',
-  from: '56958349134'
+  body: 'hola',
+  from: '56963754310'
 }
+Error al encolar (ID ans_ff7b011b-4a83-42c0-b07b-0e82c8738159): ReferenceError: arregloActual is not defined
+    at Object.ans_ff7b011b-4a83-42c0-b07b-0e82c8738159 (/mnt/c/Users/Nicolas/OneDrive/Escritorio/practica/prueba1/bot Practica/botWhatsapp/app.js:242:52)
+    at async runContext (/mnt/c/Users/Nicolas/OneDrive/Escritorio/practica/prueba1/bot Practica/botWhatsapp/node_modules/@bot-whatsapp/bot/lib/bundle.bot.cjs:1375:17)
+    at async cbEveryCtx (/mnt/c/Users/Nicolas/OneDrive/Escritorio/practica/prueba1/bot Practica/botWhatsapp/node_modules/@bot-whatsapp/bot/lib/bundle.bot.cjs:1401:13)
+    at async resolveCbEveryCtx (/mnt/c/Users/Nicolas/OneDrive/Escritorio/practica/prueba1/bot Practica/botWhatsapp/node_modules/@bot-whatsapp/bot/lib/bundle.bot.cjs:1332:17)
+    at async Object.promiseInFunc (/mnt/c/Users/Nicolas/OneDrive/Escritorio/practica/prueba1/bot Practica/botWhatsapp/node_modules/@bot-whatsapp/bot/lib/bundle.bot.cjs:1183:29)
+    at async /mnt/c/Users/Nicolas/OneDrive/Escritorio/practica/prueba1/bot Practica/botWhatsapp/node_modules/@bot-whatsapp/bot/lib/bundle.bot.cjs:529:35
+    at async Promise.allSettled (index 0)
+    at async Queue.processQueue (/mnt/c/Users/Nicolas/OneDrive/Escritorio/practica/prueba1/bot Practica/botWhatsapp/node_modules/@bot-whatsapp/bot/lib/bundle.bot.cjs:547:13)
