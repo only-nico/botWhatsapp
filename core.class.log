@@ -2,55 +2,19 @@
   key: {
     remoteJid: '56958349134@s.whatsapp.net',
     fromMe: false,
-    id: '3AC983F5BB86E4AB534A',
+    id: '3EB06F00F9A25A5300A1E7',
     participant: undefined
   },
-  messageTimestamp: 1706115830,
+  messageTimestamp: 1706189511,
   pushName: 'Nico',
   broadcast: false,
   message: Message {
-    conversation: 'hola',
+    conversation: 'reset',
     messageContextInfo: MessageContextInfo {
       deviceListMetadata: [DeviceListMetadata],
       deviceListMetadataVersion: 2
     }
   },
-  body: 'hola',
+  body: 'reset',
   from: '56958349134'
-}
-[QUEUE_SE_ENVIO]:  {
-  ref: 'ans_f76d7985-7325-40b0-896d-b012318149ea',
-  keyword: 'key_c5d7956c-c063-4130-8056-1db04aaad65d',
-  answer: '__call_action__',
-  options: {
-    media: null,
-    buttons: [],
-    capture: false,
-    child: null,
-    delay: 0,
-    idle: null,
-    ref: null,
-    nested: [],
-    keyword: {},
-    callback: true
-  },
-  refSerialize: '83f0d9bb328cf513234fb21e0e47152c'
-}
-[QUEUE_SE_ENVIO]:  {
-  ref: 'ans_f7ff0272-225f-45c6-83e9-92cd4eb13c3d',
-  keyword: 'ans_f76d7985-7325-40b0-896d-b012318149ea',
-  answer: 'Ingrese *iniciar* para comenzar a utilizar el bot',
-  options: {
-    media: null,
-    buttons: [],
-    capture: false,
-    child: null,
-    delay: 0,
-    idle: null,
-    ref: null,
-    nested: [],
-    keyword: {},
-    callback: false
-  },
-  refSerialize: '6f98c9297a1f351b5c0cdfeda5443b5c'
 }

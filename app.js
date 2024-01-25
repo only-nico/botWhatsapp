@@ -12,10 +12,10 @@ const main = async () => {
     let art = 1
     let num = 0
     let contador=0
-    /*process.on('unhandledRejection', (reason, promise) => {
+    process.on('unhandledRejection', (reason, promise) => {
         console.error('Unhandled Rejection at:', promise, 'reason:', reason);
         // Puedes hacer algo adicional aquí si es necesario
-    });*/
+    });
     const arregloAleatorio = [];
     const indicesUsados=[];
     for (let index = 0; index < 6; index++) {
@@ -34,23 +34,25 @@ const main = async () => {
     // Nuevo flujo para enviar elementos de un array
 
     const flowTerciario = addKeyword('2',  { sensitive: true }).addAction(
-        async (_, {flowDynamic}) => {
-
-            return await flowDynamic('mas información: '+ textoPagina[art-1].fragmentoLink+'\n\nIngrese *reset* para reiniciar o *return* para volver');
+        async (_, {flowDynamic, state}) => {
+            const myState = state.getMyState()
+            return await flowDynamic('mas información: '+ textoPagina[myState.i-1].fragmentoLink+'\n\nIngrese *reset* para reiniciar o *return* para volver');
         })
         
     const flowSecundario = addKeyword('1', { sensitive: true }).addAction(
-        async (_, {flowDynamic}) => {
-            return await flowDynamic(textoPagina[art-1].fragmentoTexto+"\n\nMande *2* para más \nMande *reset* para reiniciar");
+        async (_, {flowDynamic, state}) => {
+            const myState = state.getMyState()
+            return await flowDynamic(textoPagina[myState.i-1].fragmentoTexto+"\n\nMande *2* para más \nMande *reset* para reiniciar");
         },[flowTerciario])
         
 
     const flowEnviarArray = addKeyword('0', { sensitive: true })
         .addAction(
-        async (_, {flowDynamic}) => {
+        async (_, {flowDynamic, state}) => {
+            const myState = state.getMyState()
             await flowDynamic([{
-                body: textoPagina[art-1].fragmentoTitulo + "\n\nMande *1* para más \nMande *reset* para reiniciar",
-                media: textoPagina[art-1].src
+                body: textoPagina[myState.i-1].fragmentoTitulo + "\n\nMande *1* para más \nMande *reset* para reiniciar",
+                media: textoPagina[myState.i-1].src
         }]);
         },[flowSecundario])
         
@@ -58,7 +60,7 @@ const main = async () => {
     const flowPrincipal2=addKeyword(["iniciar","Iniciar","INICIAR","Return","RETURN","return"],{sensitive:true}).addAnswer(
         'generando artículos...',
         {delay:1000},
-        async (ctx, {provider, flowDynamic, state}) => {
+        async (_, {provider, flowDynamic}) => {
             for (let index = 0; index < arregloAleatorio.length; index++) {
                 const e = arregloAleatorio[index];
                 let bodyMessage;
@@ -69,7 +71,6 @@ const main = async () => {
                 } else {
                     bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
                 }
-            
                 await flowDynamic([
                     {
                         body: bodyMessage,
@@ -80,11 +81,14 @@ const main = async () => {
             
         }).addAction(
         {capture:true},
-        async (ctx, { gotoFlow }) => {
+        async (ctx, { gotoFlow, state }) => {
             console.log('mensaje recibido: ', ctx.body, ' y ', art);
-            if (!isNaN(ctx.body) && indicesUsados.includes(parseInt(ctx.body)-1)) {
-                console.log(indicesUsados.includes(parseInt(ctx.body)-1))
-                art = parseInt(ctx.body);
+            if (!isNaN(ctx.body)) {
+                try{
+                await state.update({i:parseInt(ctx.body)})
+            } catch (error){
+                console.log(error)
+            }
                 return gotoFlow(flowEnviarArray);
             }
             console.log('mensaje recibido: ', ctx.body, ' y ', art);
@@ -138,13 +142,15 @@ const main = async () => {
             
         }).addAction('',
         {capture:true},
-        async (ctx, { gotoFlow, fallBack }) => {
-            if (!isNaN(ctx.body) && indicesUsados.includes(parseInt(ctx.body)-1)) {
-                console.log(indicesUsados.includes(parseInt(ctx.body)-1))
-                art = parseInt(ctx.body);
+        async (ctx, { gotoFlow, state }) => {
+            if (!isNaN(ctx.body)) {
+                try{
+                    await state.update({i:parseInt(ctx.body)})
+                } catch (error){
+                    console.log(error)
+                }
                 return gotoFlow(flowEnviarArray);
             }
-            else return fallBack();
         }
     )
     const flowPrincipal = addKeyword('hola',"HOLA","Hola","OLA","Ola","ola","ALO","alo","Alo", {sensitive:true})
