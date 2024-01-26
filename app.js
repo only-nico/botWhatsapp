@@ -7,6 +7,7 @@ const {
   getDocs,updateDoc,
   getDoc,setDoc
 } = require('firebase/firestore');
+const { EVENTS } = require('@bot-whatsapp/bot')
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot');
 const QRPortalWeb = require('@bot-whatsapp/portal');
 const BaileysProvider = require('@bot-whatsapp/provider/baileys');
@@ -26,49 +27,111 @@ const verificarUsuario = async (contexto) => {
 
         // Comprueba si el número de Whatsapp coincide
         if (usuario.numeroWhatsapp === contexto.from) {
-        console.log('Usuario encontrado:', usuario);
         return usuario;
         }}
+    const arreglo=agregarNumerosAleatorios([0,0,0,0,0,0],cantidad);
     let nuevoUsuario = {
-        numero: '50',
         nombre: contexto.pushName,
         numeroWhatsapp: contexto.from,
-        arregloActual: [ ]
+        arregloActual: arreglo
         };
+    
     const usuarioRef = doc(database, 'usuarios', nuevoUsuario.numeroWhatsapp);
     await setDoc(usuarioRef,nuevoUsuario);
     console.log('Usuario agregado a la base de datos.');
     return nuevoUsuario;
     
 };
-const actualizarUsuario = async (contexto, campo, nuevoValor) => {
-    // Obtén todos los usuarios
-    const resultado = await getDocs(collection(database, 'usuarios'));
-  
-    // Recorre los usuarios
-    for (let doc of resultado.docs) {
-      let usuario = doc.data();
-  
-      // Comprueba si el número de Whatsapp coincide
-      if (usuario.numeroWhatsapp === contexto) {
-        console.log('Usuario encontrado:', usuario);
-        
-        // Actualiza el campo específico
-        const usuarioRef = doc(database, 'usuarios', usuario.numeroWhatsapp);
-        let camposParaActualizar = { [campo]: nuevoValor };
-        await updateDoc(usuarioRef, camposParaActualizar);
-        console.log('Campo actualizado.');
-        
-        // Retorna el usuario actualizado
-        return { ...usuario, [campo]: nuevoValor };
-      }
+const actualizarRanking = async (codigoUrl) => {
+    const articuloRef = doc(collection(database, 'articulosRank'), codigoUrl);
+    
+    try {
+        const articuloDoc = await getDoc(articuloRef);
+
+        if (articuloDoc.exists()) {
+            // Si el artículo ya existe, actualiza las vistas
+            const camposParaActualizar = { vistas: (articuloDoc.data().vistas || 0) + 1 };
+            await updateDoc(articuloRef, camposParaActualizar);
+           
+            return articuloDoc.data();
+        } else {
+            // Si el artículo no existe, crea uno nuevo con el códigoUrl como clave
+            const nuevoArticulo = {
+                vistas: 1
+            };
+            await setDoc(articuloRef, nuevoArticulo);
+            console.log('Nuevo artículo agregado a la base de datos.');
+            return nuevoArticulo;
+        }
+    } catch (error) {
+        console.error('Error al actualizar/crear el artículo:', error);
+        return null;
     }
-  
-    // Si el usuario no se encontró, imprime un mensaje
-    console.log('Usuario no encontrado.');
+
+};
+
+const agregarPaginaVisitada = async (numeroTelefono, url) => {
+    try {
+        const resultado = await getDocs(collection(database, 'usuarios'));
+
+        for (let art of resultado.docs) {
+            let usuario = art.data();
+            if (usuario.numeroWhatsapp === numeroTelefono) {
+                
+                if (usuario.numeroWhatsapp) {
+                    const usuarioRef = doc(collection(database, 'usuarios'), usuario.numeroWhatsapp);
+                 
+                    // Obtener el códigoLink de la URL
+                    const partes = url.split("=");
+                    const codigoLink = partes[1];
+
+                    // Crear el path para acceder al campo visitas[codigoLink]
+                    const pathCampoVisitas = `visitas.${codigoLink}`;
+
+                    // Actualizar el campo visitas[codigoLink] sumando 1
+                    const camposParaActualizar = {
+                        [pathCampoVisitas]: (usuario.visitas && usuario.visitas[codigoLink] || 0) + 1
+                    };
+                    const hola=await actualizarRanking(codigoLink);
+                    await updateDoc(usuarioRef, camposParaActualizar);
+                    console.log('Campo visitas actualizado.');
+                    return { ...usuario };
+                } else {
+                    console.log('numeroWhatsapp es undefined');
+                }
+            }
+        }
+        console.log('Usuario no encontrado.');
+    } catch (error) {
+        console.error('Se produjo un error:', error);
+    }
     return null;
-  };
-  
+};
+
+const actualizarUsuario = async (contexto, campo, nuevoValor) => {
+    try {
+        const resultado = await getDocs(collection(database, 'usuarios'));
+        for (let art of resultado.docs) {
+            let usuario = art.data();
+            if (usuario.numeroWhatsapp === contexto) {
+                if (usuario.numeroWhatsapp) {
+                    const usuarioRef = doc(collection(database, 'usuarios'), usuario.numeroWhatsapp);
+                    let camposParaActualizar = { [campo]: nuevoValor };
+                    await updateDoc(usuarioRef, camposParaActualizar);
+                    console.log('Campo actualizado.');
+                    return { ...usuario, [campo]: nuevoValor };
+                } else {
+                    console.log('numeroWhatsapp es undefined');
+                }
+            }
+        }
+        console.log('Usuario no encontrado.');
+    } catch (error) {
+        console.error('Se produjo un error:', error);
+    }
+    return null;
+};
+
 function agregarNumerosAleatorios(array,tamaño) {
     let copiaArray = [...array]; // Crea una copia del array original
     for (let i = 0; i < cantidad; i++) {
@@ -141,6 +204,7 @@ const main = async () => {
         {delay:1000},
         async (_, {provider, flowDynamic}) => {
             
+            
             for (let index = 0; index < user.arregloActual.length; index++) {
                 const e = textoPagina[user.arregloActual[index]];
                 let bodyMessage;
@@ -169,6 +233,7 @@ const main = async () => {
             } catch (error){
                 console.log(error)
             }
+                user=await agregarPaginaVisitada(user.numeroWhatsapp,textoPagina[parseInt(ctx.body)].fragmentoLink);
                 return gotoFlow(flowEnviarArray);
             }
             console.log('mensaje recibido: ', ctx.body, ' y ', art);
@@ -178,32 +243,14 @@ const main = async () => {
         'generando artículos...',
         {delay:1000},
         async (ctx, {provider, flowDynamic}) => {
-            arregloAleatorio.splice(0, arregloAleatorio.length);
-            contador+=1;
-            console.log(indicesUsados);
-            if(contador==3){
-                indicesUsados.splice(0, indicesUsados.length);
-                contador=0;
-            }
-            for (let index = 0; index < 6; index++) {
-                let numeroEnteroAleatorio;
-                // Generar un índice aleatorio que no se haya usado antes
-                do {
-                    numeroEnteroAleatorio = Math.floor(Math.random() * textoPagina.length);
-                } while (indicesUsados.includes(numeroEnteroAleatorio));
-            
-                // Guardar el índice para evitar repeticiones
-                indicesUsados.push(numeroEnteroAleatorio);
-            
-                // Añadir el elemento correspondiente al arregloAleatorio
-                arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
-            }
-            for (let index = 0; index < arregloAleatorio.length; index++) {
-                const e = arregloAleatorio[index];
+            const arreglo=agregarNumerosAleatorios(user.arregloActual,textoPagina.length);
+            user= await actualizarUsuario(user.numeroWhatsapp,"arregloActual",arreglo);
+            for (let index = 0; index < cantidad; index++) {
+                const e = textoPagina[user.arregloActual[index]];
                 let bodyMessage;
                 
                 // Verificar si es la última iteración
-                if (index === arregloAleatorio.length - 1) {
+                if (index === cantidad- 1) {
                     bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n\nIngrese el índice del artículo:";
                 } else {
                     bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
@@ -229,24 +276,14 @@ const main = async () => {
                 } catch (error){
                     console.log(error)
                 }
+                user=await agregarPaginaVisitada(user.numeroWhatsapp,textoPagina[parseInt(ctx.body)].fragmentoLink);
                 return gotoFlow(flowEnviarArray);
             }
         }
     )
-    const flowPrincipal = addKeyword('hola',"HOLA","Hola","OLA","Ola","ola","ALO","alo","Alo", {sensitive:true})
+    const flowPrincipal = addKeyword(EVENTS.WELCOME, {sensitive:true})
         .addAction(async (ctx,{flowDynamic})=>{
             user= await verificarUsuario(ctx);
-            console.log(user.arregloActual);
-            const arreglo=agregarNumerosAleatorios(user.arregloActual,textoPagina.length)
-            console.log(arreglo)
-            actualizarUsuario(user.numeroWhatsapp, arregloActual, arreglo)
-            .then(userActualizado => {
-                console.log(userActualizado);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            console.log("aca");
             await flowDynamic([
                 {
                     body: '🙌 Bienvenido '+ctx.pushName+', mi nombre es *Lara*',
