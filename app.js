@@ -1,11 +1,11 @@
 
 require('./firebase/config.js');
 const {
-  getFirestore,
-  doc,
-  collection,
-  getDocs,updateDoc,
-  getDoc,setDoc
+    getFirestore,
+    doc,
+    collection,
+    getDocs,updateDoc,
+    getDoc,setDoc
 } = require('firebase/firestore');
 const { EVENTS } = require('@bot-whatsapp/bot')
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot');
@@ -13,29 +13,26 @@ const QRPortalWeb = require('@bot-whatsapp/portal');
 const BaileysProvider = require('@bot-whatsapp/provider/baileys');
 const MockAdapter = require('@bot-whatsapp/database/mock');
 const { fetchArticles, processArticles } = require('./articulos.js'); // Ajusta la ruta según tu estructura de archivos
-const cantidad=6;
+const { text } = require('express');
 const database=getFirestore();
+const cantidad = 3;
 
 const verificarUsuario = async (contexto) => {
 // Obtén todos los usuarios
-
     const resultado = await getDocs(collection(database, 'usuarios'));
-
     // Recorre los usuarios
     for (let doc of resultado.docs) {
         let usuario = doc.data();
-
         // Comprueba si el número de Whatsapp coincide
         if (usuario.numeroWhatsapp === contexto.from) {
         return usuario;
         }}
-    const arreglo=agregarNumerosAleatorios([0,0,0,0,0,0],cantidad);
+    const arreglo=agregarNumerosAleatorios([0,0,0], cantidad);
     let nuevoUsuario = {
         nombre: contexto.pushName,
         numeroWhatsapp: contexto.from,
         arregloActual: arreglo
         };
-    
     const usuarioRef = doc(database, 'usuarios', nuevoUsuario.numeroWhatsapp);
     await setDoc(usuarioRef,nuevoUsuario);
     console.log('Usuario agregado a la base de datos.');
@@ -52,7 +49,6 @@ const actualizarRanking = async (codigoUrl) => {
             // Si el artículo ya existe, actualiza las vistas
             const camposParaActualizar = { vistas: (articuloDoc.data().vistas || 0) + 1 };
             await updateDoc(articuloRef, camposParaActualizar);
-           
             return articuloDoc.data();
         } else {
             // Si el artículo no existe, crea uno nuevo con el códigoUrl como clave
@@ -80,7 +76,6 @@ const agregarPaginaVisitada = async (numeroTelefono, url) => {
                 
                 if (usuario.numeroWhatsapp) {
                     const usuarioRef = doc(collection(database, 'usuarios'), usuario.numeroWhatsapp);
-                 
                     // Obtener el códigoLink de la URL
                     const partes = url.split("=");
                     const codigoLink = partes[1];
@@ -137,21 +132,19 @@ function agregarNumerosAleatorios(array,tamaño) {
     for (let i = 0; i < cantidad; i++) {
         let numeroAleatorio;
         do {
-        numeroAleatorio = Math.floor(Math.random() * tamaño); // Genera un número aleatorio entre 0 y 999
+        numeroAleatorio = Math.floor(Math.random() *40); // Genera un número aleatorio entre 0 y 999
         } while (copiaArray.includes(numeroAleatorio));
         copiaArray[i] = numeroAleatorio; // Reemplaza el número en el índice 'i' con el número aleatorio
     }
     return copiaArray;
     }
 
-  
 const miURL = 'https://encuentro.migracionescomunicativas.cl/wp-json/wp/v2/posts/';
 const main = async () => {
     const arregloArticulos = await fetchArticles(miURL);
     const textoPagina = processArticles(arregloArticulos);
+    console.log(textoPagina.length);
     let art = 1
-    let num = 0
-    let contador=0
     let user;
     /*process.on('unhandledRejection', (reason, promise) => {
         console.error('Unhandled Rejection at:', promise, 'reason:', reason);
@@ -174,17 +167,20 @@ const main = async () => {
     
 
     // Nuevo flujo para enviar elementos de un array
+    const flowDespedida = addKeyword(['chao','CHAO','Chao','adios','Contactar','contactar','Contactar'],  { sensitive: true })
+    .addAnswer('Gracias por haber sostenido esta conversación. Recuerda, soy Lara la divulgadora de innovaciones de la UACh')
+    .addAnswer('Puedes escribirme a oficina.otl@uach.cl o seguirme en instagram https://www.instagram.com/otl_uach/')
 
     const flowTerciario = addKeyword('2',  { sensitive: true }).addAction(
         async (_, {flowDynamic, state}) => {
             const myState = state.getMyState()
-            return await flowDynamic('mas información: '+ textoPagina[myState.i-1].fragmentoLink+'\n\nIngrese *reset* para reiniciar o *return* para volver');
+            return await flowDynamic('mas información: '+ textoPagina[myState.i-1].fragmentoLink+'\n\nEstamos muy agradecidos de esta conversación contigo. Te proponemos seguir conociendo un poco más sobre innovaciones? \nDigita *Reset* para que te comparta otras tres iniciativas\n\nSi te interesa ser contactado en las próximas horas por una persona de la Dirección de Innovación UACh, digita *Contactar*');
         })
         
     const flowSecundario = addKeyword('1', { sensitive: true }).addAction(
         async (_, {flowDynamic, state}) => {
             const myState = state.getMyState()
-            return await flowDynamic(textoPagina[myState.i-1].fragmentoTexto+"\n\nMande *2* para más \nMande *reset* para reiniciar");
+            return await flowDynamic(textoPagina[myState.i-1].fragmentoTexto+"\n\nMuy bien, gracias por interesarte en nuestro trabajo \n¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *2* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*");
         },[flowTerciario])
         
 
@@ -193,7 +189,7 @@ const main = async () => {
         async (_, {flowDynamic, state}) => {
             const myState = state.getMyState()
             await flowDynamic([{
-                body: textoPagina[myState.i-1].fragmentoTitulo + "\n\nMande *1* para más \nMande *reset* para reiniciar",
+                body: textoPagina[myState.i-1].fragmentoTitulo + "\n\nExcelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *1* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*",
                 media: textoPagina[myState.i-1].src
         }]);
         },[flowSecundario])
@@ -203,26 +199,26 @@ const main = async () => {
         'generando artículos...',
         {delay:1000},
         async (_, {provider, flowDynamic}) => {
-            
-            
-            for (let index = 0; index < user.arregloActual.length; index++) {
-                const e = textoPagina[user.arregloActual[index]];
-                let bodyMessage;
-                
-                // Verificar si es la última iteración
-                if (index === arregloAleatorio.length - 1) {
-                    bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n\nIngrese el índice del artículo:";
-                } else {
-                    bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
-                }
-                await flowDynamic([
-                    {
-                        body: bodyMessage,
-                        media: e.src
+            try{
+                for (let index = 0; index < cantidad; index++) {
+                    const e = textoPagina[user.arregloActual[index]];
+                    let bodyMessage;
+                    // Verificar si es la última iteración
+                    if (index == cantidad- 1) {
+                        bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n\nAhora ingresa el número de la innovación sobre la que deseas conocer un poco más...";
+                    } else {
+                        bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
                     }
-                ]);
+                    await flowDynamic([
+                        {
+                            body: bodyMessage,
+                            media: e.src
+                        }
+                    ]);
+                }
+            } catch (error){
+                console.log(error)
             }
-            
         }).addAction(
         {capture:true},
         async (ctx, { gotoFlow, state }) => {
@@ -251,7 +247,7 @@ const main = async () => {
                 
                 // Verificar si es la última iteración
                 if (index === cantidad- 1) {
-                    bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n\nIngrese el índice del artículo:";
+                    bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n\nAhora ingresa el número de la innovación sobre la que deseas conocer un poco más...";
                 } else {
                     bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
                 }
@@ -265,10 +261,8 @@ const main = async () => {
                 catch (error) {
                     console.error('Error durante la ejecución de flowDynamic:', error);
                 }
-            }
-            
-        }).addAction('',
-        {capture:true},
+            }})
+        .addAction({capture:true},
         async (ctx, { gotoFlow, state }) => {
             if (!isNaN(ctx.body)) {
                 try{
@@ -286,14 +280,15 @@ const main = async () => {
             user= await verificarUsuario(ctx);
             await flowDynamic([
                 {
-                    body: '🙌 Bienvenido '+ctx.pushName+', mi nombre es *Lara*',
-                    media:'https://i.pinimg.com/originals/f4/7c/59/f47c59a85004cfed5655f69faca5341d.jpg'
+                    body: 'Hola '+ctx.pushName+', bienvenido/a, mi nombre es *Lara* y soy una *divulgadora de innovaciones* de la Universidad Austral de Chile.',
+                    media:'imgs/lara3.jpg'
                 }
             ])})
-        .addAnswer('Ingrese *iniciar* para comenzar a utilizar el bot')
+        .addAnswer('Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.', {delay:1000})
+        .addAnswer('Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones', {delay:1000})
 
     const adapterDB = new MockAdapter();
-    const adapterFlow = createFlow([flowPrincipal,flowPrincipal2,flowPrincipal3, flowEnviarArray, flowSecundario, flowTerciario]);
+    const adapterFlow = createFlow([flowPrincipal,flowPrincipal2,flowPrincipal3, flowEnviarArray, flowSecundario, flowTerciario, flowDespedida]);
     const adapterProvider = createProvider(BaileysProvider);
 
     createBot({
