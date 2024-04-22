@@ -1,0 +1,307 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3A86C9D6963B8BC21AC8',
+    participant: undefined
+  },
+  messageTimestamp: 1713818301,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: 'hola',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'hola',
+  from: '56958349134'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_7385e37d-d4fe-48f9-a919-5d638d8c1a4e',
+  keyword: 'key_8e33d899-cf77-44a0-8b37-c4ff3d76d561',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '84aaa0fedab8f656b245af7303e6a415'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_f19cc9f8-f5b3-41fe-8f5c-669da2791889',
+  keyword: 'ans_7385e37d-d4fe-48f9-a919-5d638d8c1a4e',
+  answer: 'Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '1d572b7f1b41e7337a99a970638dde7b'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3EB07C54CF087082C18C28',
+    participant: undefined
+  },
+  messageTimestamp: 1713818307,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    protocolMessage: ProtocolMessage {
+      type: 4,
+      ephemeralExpiration: 0,
+      ephemeralSettingTimestamp: [Long],
+      disappearingMode: [DisappearingMode]
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '',
+  from: '56958349134'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_a9bd8b97-c060-41fd-aaba-eff3be1338fb',
+  keyword: 'ans_f19cc9f8-f5b3-41fe-8f5c-669da2791889',
+  answer: 'Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '823d4af3a2dfcc84c78e861abb82ddf3'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3ACC36E0E9CF70B11F8C',
+    participant: undefined
+  },
+  messageTimestamp: 1713818313,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: 'iniciar',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'iniciar',
+  from: '56958349134'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_c907cf59-98fa-4029-9354-ac95525f60ea',
+  keyword: 'key_c235f0ae-c75a-49e6-912f-c2a0253ed76c',
+  answer: 'generando artículos...',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '9335895ff01f21256db9aa8f5f981191'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_acc80701-c034-4288-8898-0e6f406c180b',
+  keyword: 'ans_c907cf59-98fa-4029-9354-ac95525f60ea',
+  answer: '__capture_only_intended__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'a607a3d316b42fed461f53c87a8880d5'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3ABE7646DACFFCF47F0B',
+    participant: undefined
+  },
+  messageTimestamp: 1713818334,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: '30',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '30',
+  from: '56958349134'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3A396B064B68B147CBAB',
+    participant: undefined
+  },
+  messageTimestamp: 1713818344,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: '1',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  from: '56958349134'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_bd9d37be-d132-46e5-a136-a4c8f0fae433',
+  keyword: 'key_ae500185-5b43-4aa9-8fb0-4886571ef09b',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'b911b6c925965451b854bda57ef31475'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3A7D6E223DA19050AAD9',
+    participant: undefined
+  },
+  messageTimestamp: 1713818351,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: '2',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '2',
+  from: '56958349134'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b4465bcb-225c-40bd-9166-5e01eabde5b5',
+  keyword: 'key_a3eb1d67-32d7-48fa-9b2c-f65f6a634599',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '3858efb18bcbaf984675343108ca8e06'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3AC3895F589FD4BA972C',
+    participant: undefined
+  },
+  messageTimestamp: 1713818377,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: 'Contactar',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'Contactar',
+  from: '56958349134'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_ab1270f9-a05b-481e-85f5-d558a880b85d',
+  keyword: 'key_39fb5b76-f4f7-4314-aa70-0404300fc368',
+  answer: 'Gracias por haber sostenido esta conversación. Recuerda, soy Lara la divulgadora de innovaciones de la UACh',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '9ebdd57c2b1b01ea888d5e3288079392'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_35ff0b5a-7b88-442b-8627-6a46e5c62e11',
+  keyword: 'ans_ab1270f9-a05b-481e-85f5-d558a880b85d',
+  answer: 'Puedes escribirme a oficina.otl@uach.cl o seguirme en instagram https://www.instagram.com/otl_uach/',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'f03a9f471edced2407997ba768a09e98'
+}
