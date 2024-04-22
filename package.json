@@ -16,6 +16,7 @@
         "@bot-whatsapp/portal": "latest",
         "@bot-whatsapp/provider": "latest",
         "@whiskeysockets/baileys": "6.5.0",
+        "axios": "^1.6.8",
         "cache-manager": "5.2.4",
         "cheerio": "^1.0.0-rc.12",
         "express": "^4.19.2",

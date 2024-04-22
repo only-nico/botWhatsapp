@@ -1,14 +1,16 @@
 // articulos.js
 const { JSDOM } = require('jsdom');
+const axios = require('axios');
+
+
 const fetchArticles = async () => {
     const arregloArticulos = [];
     let page = 1;
 
     try {
         while (page <= 10) {
-            let htmlString = await fetch(`https://encuentro.migracionescomunicativas.cl/?paged=${page}`,{ timeout: 30000 })
-                .then(response => response.text());
-
+            const response = await axios.get(`https://encuentro.migracionescomunicativas.cl/?paged=${page}`,{ timeout: 30000 });
+            const htmlString = response.data;
             const { window } = new JSDOM(htmlString);
             const doc = window.document;
             const articulos = doc.querySelector('.ast-row').querySelectorAll('article');
