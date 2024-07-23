@@ -3,11 +3,13 @@
     "version": "1.0.0",
     "description": "",
     "main": "app.js",
+    
+  "type": "module",
     "scripts": {
         "prestart": "npx eslint .",
         "pre-copy": "cd .. && npm run  copy.lib base-baileys-memory",
         "start": "node app.js"
-    },
+    },    
     "keywords": [],
     "dependencies": {
         "@bot-whatsapp/bot": "latest",
