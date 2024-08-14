@@ -71,17 +71,18 @@ const actualizarRanking = async (codigoUrl) => {
     }
 };
 
-const agregarPaginaVisitada = async (numeroTelefono, url) => {
+const agregarPaginaVisitada = async (numeroTelefono, url, id) => {
     try {
         
         const resultado = await getDocs(collection(database, 'usuarios'));
-        console.log(resultado);
         for (let docSnap of resultado.docs) {
             let usuario = docSnap.data();
             if (usuario.numeroWhatsapp === numeroTelefono) {
                 const usuarioRef = doc(database, 'usuarios', usuario.numeroWhatsapp);
-                const partes = url.split("=");
-                const codigoLink = partes[1];
+                //const partes = url.split("="); no funciona con la nueva pagina, no tiene numeros distintivos en el url
+                //console.log(partes);          como alternativa, uso el indice para la base de datos
+                //const codigoLink = partes[1];
+                const codigoLink = String(id);
                 const pathCampoVisitas = `visitas.${codigoLink}`;
                 const camposParaActualizar = {
                     [pathCampoVisitas]: (usuario.visitas && usuario.visitas[codigoLink] || 0) + 1
@@ -134,7 +135,7 @@ const main = async () => {
     try {
         const arregloArticulos = await fetchArticles();
         const textoPagina = await processArticles(arregloArticulos);
-        console.log(textoPagina.length);
+        //console.log(textoPagina.length);
         let art = 1;
         let user;
         const arregloAleatorio = [];
@@ -152,16 +153,27 @@ const main = async () => {
                 // Añadir el elemento correspondiente al arregloAleatorio
                 arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
         }
-        
+
         const flowDespedida = addKeyword(['chao', 'CHAO', 'Chao', 'adios', 'Contactar', 'contactar', 'Contactar'], { sensitive: true })
             .addAnswer('Gracias por haber sostenido esta conversación. Recuerda, soy Lara la divulgadora de innovaciones de la UACh')
-            .addAnswer('Puedes escribirme a oficina.otl@uach.cl o seguirme en instagram https://www.instagram.com/otl_uach/');
+            .addAnswer('Puedes escribirme a oficina.otl@uach.cl o seguirme en instagram https://www.instagram.com/otl_uach/')
+            .addAction(
+                async (_, { flowDynamic }) => {
+                    await flowDynamic([
+                        {
+                            body: 'Comparte mi contacto con esta imagen, o con el siguiente link \nhttps://wa.me/qr/URVPLRVME6GNM1',
+                            media: 'imgs/laraqr.jpg'
+                        }
+                    ]);
+                    }   
+            );
 
         const flowTerciario = addKeyword('3', { sensitive: true }).addAction(
             async (_, { flowDynamic, state }) => {
                 const myState = state.getMyState();
                 return await flowDynamic('más información: ' + textoPagina[myState.i - 1].fragmentoLink + '\n\nEstamos muy agradecidos de esta conversación contigo. Te proponemos seguir conociendo un poco más sobre innovaciones? \nDigita *Reset* para que te comparta otras tres iniciativas\n\nSi te interesa ser contactado en las próximas horas por una persona de la Dirección de Innovación UACh, digita *Contactar*');
             });
+
         const flowAcademico = addKeyword('2', { sensitive: true })
             .addAction(
                 async (_, { flowDynamic, state }) => {
@@ -176,7 +188,7 @@ const main = async () => {
                         }
                         console.log(imagen);
                         await flowDynamic([{
-                            body: `${e.indice} - *${e.fragmentoTitulo}* \n El investigador responsable de este proyecto es - *${e.headingText}* \nExcelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *3* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
+                            body: `${e.indice} - *${e.fragmentoTitulo}* \n El investigador responsable de este proyecto es *${e.headingText}* \n\nExcelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *3* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
                             media: imagen
                         }]);
                     } catch (error) {
@@ -189,8 +201,13 @@ const main = async () => {
         const flowSecundario = addKeyword('1', { sensitive: true }).addAction(
             async (_, { flowDynamic, state }) => {
                 const myState = state.getMyState();
-                return await flowDynamic(textoPagina[myState.i-1].indice+" "+ textoPagina[myState.i-1].fragmentoTitulo+"\n\n"+ textoPagina[myState.i - 1].solutionText + "\n\nMuy bien, gracias por interesarte en nuestro trabajo \n¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *2* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*");
-            }, [flowAcademico]);
+                return await flowDynamic(textoPagina[myState.i-1].indice+" - *"+textoPagina[myState.i-1].fragmentoTitulo+"*\n\n"+ textoPagina[myState.i - 1].solutionText);
+            }, [flowAcademico])
+            .addAction(async (_, { flowDynamic}) => {
+                await flowDynamic([{
+                    body: `Muy bien, gracias por interesarte en nuestro trabajo \n¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *2* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
+                }]);
+            }, [flowAcademico]);;
 
         const flowEnviarArray = addKeyword('0', { sensitive: true })
             .addAction(
@@ -198,10 +215,16 @@ const main = async () => {
                     const myState = state.getMyState();
                     const e = textoPagina[myState.i-1];
                     await flowDynamic([{
-                        body: `${e.indice} - *${e.fragmentoTitulo}* \n${e.problematicText}\n\n *Excelente ¿Quieres seguir conociendo un poco más sobre esta innovación?* Digita *1* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
+                        body: `${e.indice} - *${e.fragmentoTitulo}* \n${e.problematicText}`,
                         media: textoPagina[myState.i - 1].src
                     }]);
-                }, [flowSecundario]);
+                })
+            .addAction(async (_, { flowDynamic}) => {
+                await flowDynamic([{
+                    body: `Excelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *1* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
+                }]);
+            }, [flowSecundario]);
+
 
         const flowPrincipal2 = addKeyword(["iniciar", "Iniciar", "INICIAR", "Return", "RETURN", "return"], { sensitive: true }).addAnswer(
             'generando artículos...',
@@ -227,11 +250,11 @@ const main = async () => {
                                 // Asegúrate de que `e.src` esté definido
                                 const mediaSrc = e.src || '';  // Usa una cadena vacía si `e.src` es `undefined`
                                 
-                                try {
+                                try {/*
                                     console.log('Enviando mensaje:', {
                                         body: bodyMessage,
                                         media: mediaSrc
-                                    });
+                                    });*/
                                     await flowDynamic([
                                         {
                                             body: bodyMessage,
@@ -265,9 +288,7 @@ const main = async () => {
                         } catch (error) {
                             console.log(error);
                         }
-
-                        console.log(user.numeroWhatsapp, textoPagina[parseInt(ctx.body)].fragmentoLink);
-                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body)].fragmentoLink);
+                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body)-1].fragmentoLink, textoPagina[parseInt(ctx.body)-1].indice);
                         return gotoFlow(flowEnviarArray);
                     }
                     console.log('mensaje recibido: ', ctx.body, ' y ', art);
@@ -284,9 +305,9 @@ const main = async () => {
                     const e = textoPagina[user.arregloActual[index]];
                     let bodyMessage;
                     if (index === cantidad - 1) {
-                        bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n\nAhora ingresa el número de la innovación sobre la que deseas conocer un poco más...";
+                        bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}\n\nAhora ingresa el número de la innovación sobre la que deseas conocer un poco más...`;
                     } else {
-                        bodyMessage = e.indice + " - *" + e.fragmentoTitulo + "* \n";
+                        bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
                     }
                     try {
                         await flowDynamic([
@@ -307,7 +328,7 @@ const main = async () => {
                         } catch (error) {
                             console.log(error);
                         }
-                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body)].fragmentoLink);
+                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body)-1].fragmentoLink, textoPagina[parseInt(ctx.body)-1].indice);
                         return gotoFlow(flowEnviarArray);
                     }
                 }
@@ -327,7 +348,7 @@ const main = async () => {
             .addAnswer('Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones', { delay: 1000 });
 
         const adapterDB = new MockAdapter();
-        const adapterFlow = createFlow([flowPrincipal, flowPrincipal2, flowPrincipal3, flowEnviarArray, flowSecundario,flowAcademico, flowTerciario, flowDespedida]);
+        const adapterFlow = createFlow([flowPrincipal, flowPrincipal2, flowPrincipal3, flowEnviarArray, flowSecundario, flowAcademico, flowTerciario, flowDespedida]);
         const adapterProvider = createProvider(BaileysProvider);
 
         createBot({
