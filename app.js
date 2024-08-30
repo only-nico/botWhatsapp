@@ -180,12 +180,7 @@ const main = async () => {
                     try {
                         const myState = state.getMyState();
                         const e = textoPagina[myState.i - 1];
-                        let imagen = ""; // Cambiar 'const' a 'let' ya que imagen se reasigna
-                        if (e.imageSrc !== "") {
-                            imagen = e.imageSrc;
-                        } else {
-                            imagen = e.src;
-                        }
+                        let imagen = e.imgSrc;
                         console.log(imagen);
                         await flowDynamic([{
                             body: `${e.indice} - *${e.fragmentoTitulo}* \n El investigador responsable de este proyecto es *${e.headingText}* \n\nExcelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *3* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
@@ -227,7 +222,7 @@ const main = async () => {
 
 
         const flowPrincipal2 = addKeyword(["iniciar", "Iniciar", "INICIAR", "Return", "RETURN", "return"], { sensitive: true }).addAnswer(
-            'generando artículos...',
+            'espere un momento, se están generando artículos...',
             { delay: 1000 },
             async (_, { provider, flowDynamic }) => {
                 try {
