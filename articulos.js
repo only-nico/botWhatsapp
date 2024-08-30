@@ -7,40 +7,59 @@ const fetchAndParseHTML = async (url) => {
         const response = await fetch(url);
         const html = await response.text();
         const dom = new JSDOM(html);
-        return dom.window.document;
+        const document = dom.window.document;
+        return document; // Retorna solo el documento para reducir el uso de memoria
     } catch (error) {
         console.error('Error fetching and parsing HTML:', error);
         return null;
     }
 };
 
-// Función para obtener artículos desde una URL
-const fetchArticles = async () => {
+// Función para obtener artículos desde una URL con limitación de solicitudes simultáneas
+const fetchArticlesConcurrently = async (concurrencyLimit = 3) => {
     const articles = [];
     let page = 1;
-    const maxPages = 10;  // Define el número máximo de páginas a recorrer
+    const maxPages = 10; 
     const baseURL = 'https://otl.uach.cl/casos-de-exito/?_categories=caso-exito&_paged=';
 
-    try {
-        while (page <= maxPages) {
-            const url = `${baseURL}${page}`;  // Concatenar la URL base con el número de página
-            const document = await fetchAndParseHTML(url);
+    // Función para procesar una página
+    const processPage = async (page) => {
+        const url = `${baseURL}${page}`;
+        const document = await fetchAndParseHTML(url);
 
-            if (document) {
-                const elements = document.querySelectorAll('div[data-elementor-type="loop-item"]');
-                elements.forEach((element) => {
-                    articles.push(element.outerHTML);
-                });
-            }
+        if (document) {
+            let elements = document.querySelectorAll('div[data-elementor-type="loop-item"]'); // Cambiado a `let`
+            elements.forEach((element) => {
+                articles.push(element.outerHTML);
+            });
 
-            page++;
+            // Liberar memoria
+            elements = null; // Ahora se puede reasignar
+            document.defaultView.close(); // Cerrar la ventana de JSDOM para liberar memoria
         }
-    } catch (error) {
-        console.error('Error al obtener los artículos:', error);
+    };
+
+    const queue = [];
+    while (page <= maxPages) {
+        if (queue.length >= concurrencyLimit) {
+            await Promise.race(queue); // Esperar a que se libere un slot
+        }
+
+        const promise = processPage(page);
+        queue.push(promise);
+        promise.finally(() => {
+            const index = queue.indexOf(promise);
+            if (index > -1) queue.splice(index, 1); // Eliminar la promesa resuelta del array
+        });
+
+        page++;
     }
+
+    await Promise.all(queue); // Esperar a que todas las promesas se resuelvan
 
     return articles;
 };
+
 
 
 // Función para limpiar el texto
@@ -214,7 +233,7 @@ const processText = async (link) => {
     return null;
 };
 
-export { fetchArticles, processArticles };
+export { fetchArticlesConcurrently, processArticles };
 
 
 

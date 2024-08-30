@@ -14,7 +14,7 @@ import pkgBot from '@bot-whatsapp/bot';
 import QRPortalWeb from '@bot-whatsapp/portal';
 import BaileysProvider from '@bot-whatsapp/provider/baileys';
 import MockAdapter from '@bot-whatsapp/database/mock';
-import { fetchArticles, processArticles } from './articulos.js';
+import { fetchArticlesConcurrently, processArticles } from './articulos.js';
 
 const { EVENTS, createBot, createProvider, createFlow, addKeyword } = pkgBot;
 
@@ -24,17 +24,20 @@ const cantidad = 3;
 const verificarUsuario = async (contexto, textoPagina) => {
     try {
         const resultado = await getDocs(collection(database, 'usuarios'));
+        const batch = [];
+
         for (let docSnap of resultado.docs) {
             let usuario = docSnap.data();
             if (usuario.numeroWhatsapp === contexto.from) {
                 const arreglo = agregarNumerosAleatorios(textoPagina, cantidad);
                 const usuarioRef = doc(database, 'usuarios', usuario.numeroWhatsapp);
                 usuario.arregloActual = arreglo;
-                await updateDoc(usuarioRef, { arregloActual: arreglo });
+                batch.push(updateDoc(usuarioRef, { arregloActual: arreglo }));
                 console.log('Usuario existente actualizado.');
                 return usuario;
             }
         }
+
         const arreglo = agregarNumerosAleatorios(textoPagina, cantidad);
         let nuevoUsuario = {
             nombre: contexto.pushName,
@@ -42,8 +45,10 @@ const verificarUsuario = async (contexto, textoPagina) => {
             arregloActual: arreglo
         };
         const usuarioRef = doc(database, 'usuarios', nuevoUsuario.numeroWhatsapp);
-        await setDoc(usuarioRef, nuevoUsuario);
+        batch.push(setDoc(usuarioRef, nuevoUsuario));
         console.log('Usuario agregado a la base de datos.');
+        await Promise.all(batch); // Ejecutar todas las operaciones de actualización de una vez
+
         return nuevoUsuario;
     } catch (error) {
         console.error('Error en verificarUsuario:', error);
@@ -133,9 +138,12 @@ function agregarNumerosAleatorios(array, tamaño) {
 
 const main = async () => {
     try {
-        const arregloArticulos = await fetchArticles();
+        console.log('Uso inicial de memoria:', process.memoryUsage());
+        const arregloArticulos = await fetchArticlesConcurrently(3); // Limitar concurrencia
+        console.log('Uso de memoria después de fetchArticles:', process.memoryUsage());
+        
         const textoPagina = await processArticles(arregloArticulos);
-        //console.log(textoPagina.length);
+        console.log('Uso de memoria después de processArticles:', process.memoryUsage());
         let art = 1;
         let user;
         const arregloAleatorio = [];
