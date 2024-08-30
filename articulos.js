@@ -213,7 +213,6 @@ const processArticles = async (articles) => {
             indice += 1;
         }
     }
-    console.log(pageTexts);
     return pageTexts;
 };
 
