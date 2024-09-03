@@ -1,4 +1,4 @@
-import './firebase/config.js';
+import './firebase/config.js'; // Mantén la importación de configuración
 import {
     getFirestore,
     doc,
@@ -8,8 +8,7 @@ import {
     getDoc,
     setDoc
 } from 'firebase/firestore';
-
-// Importar módulos CommonJS usando importación por defecto
+import { initializeApp } from 'firebase/app'; // Importar Firebase App
 import pkgBot from '@bot-whatsapp/bot';
 import QRPortalWeb from '@bot-whatsapp/portal';
 import BaileysProvider from '@bot-whatsapp/provider/baileys';
@@ -18,9 +17,33 @@ import { fetchArticlesConcurrently, processArticles } from './articulos.js';
 
 const { EVENTS, createBot, createProvider, createFlow, addKeyword } = pkgBot;
 
-const database = getFirestore();
+// Inicializar la aplicación de Firebase
+
+const database = getFirestore(); // Usa firebaseApp
+
 const cantidad = 3;
 
+// Función para cargar la sesión desde Firebase
+const cargarSesion = async () => {
+    const sessionRef = doc(database, 'whatsapp-sessions', 'default-session');
+    const sessionDoc = await getDoc(sessionRef);
+    if (sessionDoc.exists()) {
+        console.log("Sesión cargada desde Firebase.");
+        return sessionDoc.data().session;
+    } else {
+        console.log("No se encontró una sesión previa.");
+        return null;
+    }
+};
+
+// Función para guardar la sesión en Firebase
+const guardarSesion = async (session) => {
+    const sessionRef = doc(database, 'whatsapp-sessions', 'default-session');
+    await setDoc(sessionRef, { session });
+    console.log("Sesión guardada en Firebase.");
+};
+
+// Función para verificar el usuario
 const verificarUsuario = async (contexto, textoPagina) => {
     try {
         const resultado = await getDocs(collection(database, 'usuarios'));
@@ -47,7 +70,7 @@ const verificarUsuario = async (contexto, textoPagina) => {
         const usuarioRef = doc(database, 'usuarios', nuevoUsuario.numeroWhatsapp);
         batch.push(setDoc(usuarioRef, nuevoUsuario));
         console.log('Usuario agregado a la base de datos.');
-        await Promise.all(batch); // Ejecutar todas las operaciones de actualización de una vez
+        await Promise.all(batch);
 
         return nuevoUsuario;
     } catch (error) {
@@ -56,6 +79,7 @@ const verificarUsuario = async (contexto, textoPagina) => {
     }
 };
 
+// Función para actualizar el ranking
 const actualizarRanking = async (codigoUrl) => {
     const articuloRef = doc(database, 'articulosRank', codigoUrl);
     try {
@@ -76,17 +100,14 @@ const actualizarRanking = async (codigoUrl) => {
     }
 };
 
+// Función para agregar página visitada
 const agregarPaginaVisitada = async (numeroTelefono, url, id) => {
     try {
-        
         const resultado = await getDocs(collection(database, 'usuarios'));
         for (let docSnap of resultado.docs) {
             let usuario = docSnap.data();
             if (usuario.numeroWhatsapp === numeroTelefono) {
                 const usuarioRef = doc(database, 'usuarios', usuario.numeroWhatsapp);
-                //const partes = url.split("="); no funciona con la nueva pagina, no tiene numeros distintivos en el url
-                //console.log(partes);          como alternativa, uso el indice para la base de datos
-                //const codigoLink = partes[1];
                 const codigoLink = String(id);
                 const pathCampoVisitas = `visitas.${codigoLink}`;
                 const camposParaActualizar = {
@@ -105,6 +126,7 @@ const agregarPaginaVisitada = async (numeroTelefono, url, id) => {
     }
 };
 
+// Función para actualizar el usuario
 const actualizarUsuario = async (contexto, campo, nuevoValor) => {
     try {
         const resultado = await getDocs(collection(database, 'usuarios'));
@@ -125,6 +147,7 @@ const actualizarUsuario = async (contexto, campo, nuevoValor) => {
     }
 };
 
+// Función para agregar números aleatorios
 function agregarNumerosAleatorios(array, tamaño) {
     const maxLength = array.length;
     tamaño = Math.min(tamaño, maxLength);
@@ -139,7 +162,7 @@ function agregarNumerosAleatorios(array, tamaño) {
 const main = async () => {
     try {
         console.log('Uso inicial de memoria:', process.memoryUsage());
-        const arregloArticulos = await fetchArticlesConcurrently(3); // Limitar concurrencia
+        const arregloArticulos = await fetchArticlesConcurrently(3);
         console.log('Uso de memoria después de fetchArticles:', process.memoryUsage());
         
         const textoPagina = await processArticles(arregloArticulos);
@@ -152,14 +175,12 @@ const main = async () => {
         for (let index = 0; index < cantidad; index++) {
             let numeroEnteroAleatorio;
         
-            // Generar un índice aleatorio que no se haya usado antes
             do {
                 numeroEnteroAleatorio = Math.floor(Math.random() * textoPagina.length);
             } while (indicesUsados.includes(numeroEnteroAleatorio));
-                // Guardar el índice para evitar repeticiones
-                indicesUsados.push(numeroEnteroAleatorio);
-                // Añadir el elemento correspondiente al arregloAleatorio
-                arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
+            
+            indicesUsados.push(numeroEnteroAleatorio);
+            arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
         }
 
         const flowDespedida = addKeyword(['chao', 'CHAO', 'Chao', 'adios', 'Contactar', 'contactar', 'Contactar'], { sensitive: true })
@@ -173,7 +194,7 @@ const main = async () => {
                             media: 'imgs/laraqr.jpg'
                         }
                     ]);
-                    }   
+                }
             );
 
         const flowTerciario = addKeyword('3', { sensitive: true }).addAction(
@@ -196,7 +217,6 @@ const main = async () => {
                         }]);
                     } catch (error) {
                         console.error('Error en flowAcademico:', error);
-                        // Manejo adicional si es necesario
                     }
                 }, [flowTerciario]
             );
@@ -210,7 +230,7 @@ const main = async () => {
                 await flowDynamic([{
                     body: `Muy bien, gracias por interesarte en nuestro trabajo \n¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *2* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
                 }]);
-            }, [flowAcademico]);;
+            }, [flowAcademico]);
 
         const flowEnviarArray = addKeyword('0', { sensitive: true })
             .addAction(
@@ -234,14 +254,13 @@ const main = async () => {
             { delay: 1000 },
             async (_, { provider, flowDynamic }) => {
                 try {
+                    const session = await cargarSesion(); // Cargar sesión antes de enviar mensajes
                     for (let index = 0; index < cantidad; index++) {
                         const itemIndex = user.arregloActual;
                  
-                        // Verificar que el índice esté dentro del rango de `textoPagina`
                         if (itemIndex[index] >= 0 && itemIndex[index] < textoPagina.length ) {
                             const e = textoPagina[itemIndex[index]];
                             
-                            // Verificar que `e` tenga la estructura esperada
                             if (e && e.indice !== undefined && e.fragmentoTitulo && e.fragmentoTexto) {
                                 let bodyMessage; 
                                 if (index === cantidad - 1) {
@@ -250,14 +269,9 @@ const main = async () => {
                                     bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
                                 }
                 
-                                // Asegúrate de que `e.src` esté definido
-                                const mediaSrc = e.src || '';  // Usa una cadena vacía si `e.src` es `undefined`
+                                const mediaSrc = e.src || '';  
                                 
-                                try {/*
-                                    console.log('Enviando mensaje:', {
-                                        body: bodyMessage,
-                                        media: mediaSrc
-                                    });*/
+                                try {
                                     await flowDynamic([
                                         {
                                             body: bodyMessage,
@@ -274,13 +288,11 @@ const main = async () => {
                             console.error(`Índice fuera de rango: ${itemIndex[index]}`);
                         }
                     }
+                    await guardarSesion(session); // Guardar sesión después de enviar mensajes
                 } catch (error) {
-                    // Captura y muestra el stack trace del error
                     console.error('Error en la construcción del mensaje en flowPrincipal2:', error.message);
                     console.error('Stack trace:', error.stack);
                 }
-                
-                
             }).addAction(
                 { capture: true },
                 async (ctx, { gotoFlow, state }) => {

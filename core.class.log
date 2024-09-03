@@ -1,0 +1,222 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '56981820757@s.whatsapp.net',
+    fromMe: false,
+    id: '3AC495FFB0E71A2E3BEF',
+    participant: undefined
+  },
+  messageTimestamp: 1725391803,
+  pushName: 'Vicho',
+  broadcast: false,
+  message: Message {
+    conversation: 'hola',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'hola',
+  from: '56981820757'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_df968840-aff9-4c73-b7a5-8f9bfdf82994',
+  keyword: 'key_472d751b-c9e6-4515-b9e9-7fd927da1251',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'dd42c33a6f3902dd3973cbec050ce500'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_ae9499f6-b8d5-479d-a79a-a8a89a0bd19c',
+  keyword: 'ans_df968840-aff9-4c73-b7a5-8f9bfdf82994',
+  answer: 'Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '9de65f9de401ba1f6bb89d363acb448b'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56981820757@s.whatsapp.net',
+    fromMe: false,
+    id: '3A45CE086267DAD2000C',
+    participant: undefined
+  },
+  messageTimestamp: 1725391817,
+  pushName: 'Vicho',
+  broadcast: false,
+  message: Message {
+    conversation: 'hola',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'hola',
+  from: '56981820757'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_0f034c61-114d-4f95-bca0-d6bb2b978db1',
+  keyword: 'ans_ae9499f6-b8d5-479d-a79a-a8a89a0bd19c',
+  answer: 'Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '83d6c6481be58f90f4eba6e688afd17a'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_df968840-aff9-4c73-b7a5-8f9bfdf82994',
+  keyword: 'key_472d751b-c9e6-4515-b9e9-7fd927da1251',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'dd42c33a6f3902dd3973cbec050ce500'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_ae9499f6-b8d5-479d-a79a-a8a89a0bd19c',
+  keyword: 'ans_df968840-aff9-4c73-b7a5-8f9bfdf82994',
+  answer: 'Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '9de65f9de401ba1f6bb89d363acb448b'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_0f034c61-114d-4f95-bca0-d6bb2b978db1',
+  keyword: 'ans_ae9499f6-b8d5-479d-a79a-a8a89a0bd19c',
+  answer: 'Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '83d6c6481be58f90f4eba6e688afd17a'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56981820757@s.whatsapp.net',
+    fromMe: false,
+    id: '3AC676400D26070484B7',
+    participant: undefined
+  },
+  messageTimestamp: 1725391827,
+  pushName: 'Vicho',
+  broadcast: false,
+  message: Message {
+    conversation: 'hola',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'hola',
+  from: '56981820757'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_df968840-aff9-4c73-b7a5-8f9bfdf82994',
+  keyword: 'key_472d751b-c9e6-4515-b9e9-7fd927da1251',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'dd42c33a6f3902dd3973cbec050ce500'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_ae9499f6-b8d5-479d-a79a-a8a89a0bd19c',
+  keyword: 'ans_df968840-aff9-4c73-b7a5-8f9bfdf82994',
+  answer: 'Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '9de65f9de401ba1f6bb89d363acb448b'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_0f034c61-114d-4f95-bca0-d6bb2b978db1',
+  keyword: 'ans_ae9499f6-b8d5-479d-a79a-a8a89a0bd19c',
+  answer: 'Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 1000,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '83d6c6481be58f90f4eba6e688afd17a'
+}
