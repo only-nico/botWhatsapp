@@ -28,8 +28,14 @@ const cargarSesion = async () => {
     const sessionRef = doc(database, 'whatsapp-sessions', 'default-session');
     const sessionDoc = await getDoc(sessionRef);
     if (sessionDoc.exists()) {
-        console.log("Sesión cargada desde Firebase.");
-        return sessionDoc.data().session;
+        const data = sessionDoc.data();
+        if (data && data.session) {
+            console.log("Sesión cargada desde Firebase.");
+            return data.session;
+        } else {
+            console.log("No se encontró una sesión válida.");
+            return null;
+        }
     } else {
         console.log("No se encontró una sesión previa.");
         return null;
