@@ -44,11 +44,15 @@ const cargarSesion = async () => {
 
 // Función para guardar la sesión en Firebase
 const guardarSesion = async (session) => {
+    if (session === undefined) {
+        console.error('Error: el valor de la sesión es undefined y no se puede guardar en Firestore.');
+        return;
+    }
+
     const sessionRef = doc(database, 'whatsapp-sessions', 'default-session');
     await setDoc(sessionRef, { session });
     console.log("Sesión guardada en Firebase.");
 };
-
 // Función para verificar el usuario
 const verificarUsuario = async (contexto, textoPagina) => {
     try {
