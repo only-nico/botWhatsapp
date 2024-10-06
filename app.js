@@ -254,14 +254,20 @@ const main = async () => {
                         let imagen = e.imgSrc;
                         console.log(imagen);
                         await flowDynamic([{
-                            body: `${e.indice} - *${e.fragmentoTitulo}* \n El investigador responsable de este proyecto es *${e.headingText}* \n\nExcelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *3* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
+                            body: `${e.indice} - *${e.fragmentoTitulo}* \n El investigador responsable de este proyecto es *${e.headingText}*`,
                             media: imagen
                         }]);
                     } catch (error) {
                         console.error('Error en flowAcademico:', error);
                     }
-                }, [flowTerciario]
-            );
+                }
+            ).addAction(
+                async (_, { flowDynamic }) => {
+                    await flowDynamic([
+                        { body: 'Excelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *3* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*' }
+                    ]);
+                }
+                , [flowTerciario]);
         
         const flowSecundario = addKeyword('1', { sensitive: true }).addAction(
             async (_, { flowDynamic, state }) => {
@@ -305,12 +311,7 @@ const main = async () => {
                             
                             if (e && e.indice !== undefined && e.fragmentoTitulo && e.fragmentoTexto) {
                                 let bodyMessage; 
-                                if (index === cantidad - 1) {
-                                    bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}\n\nAhora ingresa el número de la innovación sobre la que deseas conocer un poco más...`;
-                                } else {
-                                    bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
-                                }
-                
+                                bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
                                 const mediaSrc = e.src || '';  
                                 
                                 try {
@@ -335,7 +336,14 @@ const main = async () => {
                     console.error('Error en la construcción del mensaje en flowPrincipal2:', error.message);
                     console.error('Stack trace:', error.stack);
                 }
-            }).addAction(
+            })
+            .addAction(
+                async (ctx, { flowDynamic }) => {
+                    await flowDynamic([
+                        {  body: 'Muy bien '+ ctx.pushName + ', ahora debes digitar el número de la innovación que quieres conocer...' }
+                    ]);
+                }
+            ).addAction(
                 { capture: true },
                 async (ctx, { gotoFlow, state }) => {
                     console.log('mensaje recibido: ', ctx.body, ' y ', art);
@@ -346,6 +354,7 @@ const main = async () => {
                             console.log(error);
                         }
                         user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body)-1].fragmentoLink, textoPagina[parseInt(ctx.body)-1].indice);
+
                         return gotoFlow(flowEnviarArray);
                     }
                     console.log('mensaje recibido: ', ctx.body, ' y ', art);
@@ -353,7 +362,7 @@ const main = async () => {
             );
 
         const flowPrincipal3 = addKeyword(["reset", "Reset", "RESET"], { sensitive: true }).addAnswer(
-            'generando artículos...',
+            'espere un momento, se están generando artículos...',
             { delay: 1000 },
             async (ctx, { provider, flowDynamic }) => {
                 const arreglo = agregarNumerosAleatorios(user.arregloActual, textoPagina.length);
@@ -361,11 +370,7 @@ const main = async () => {
                 for (let index = 0; index < cantidad; index++) {
                     const e = textoPagina[user.arregloActual[index]];
                     let bodyMessage;
-                    if (index === cantidad - 1) {
-                        bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}\n\nAhora ingresa el número de la innovación sobre la que deseas conocer un poco más...`;
-                    } else {
-                        bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
-                    }
+                    bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
                     try {
                         await flowDynamic([
                             {
@@ -377,7 +382,13 @@ const main = async () => {
                         console.error('Error durante la ejecución de flowDynamic:', error);
                     }
                 }
-            }).addAction({ capture: true },
+            }).addAction(
+                async (ctx, { flowDynamic }) => {
+                    await flowDynamic([
+                        {  body: 'Muy bien '+ ctx.pushName + ', ahora debes digitar el número de la innovación que quieres conocer...' }
+                    ]);
+                }
+            ).addAction({ capture: true },
                 async (ctx, { gotoFlow, state }) => {
                     if (!isNaN(ctx.body)) {
                         try {

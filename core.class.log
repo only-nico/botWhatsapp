@@ -1,5 +1,6 @@
 [handleMsg]:  {
   key: {
+<<<<<<< HEAD
     remoteJid: '56958349134@s.whatsapp.net',
     fromMe: false,
     id: '3A4F51602A217B53B424',
@@ -10,17 +11,38 @@
   broadcast: false,
   message: Message {
     conversation: 'hola',
+=======
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: 'E9F9DE23EE83C73E3DFD9B77C871194D',
+    participant: undefined
+  },
+  messageTimestamp: 1725938621,
+  pushName: '(_ _ )',
+  broadcast: false,
+  message: Message {
+    conversation: 'me gusta el helado',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
     messageContextInfo: MessageContextInfo {
       deviceListMetadata: [DeviceListMetadata],
       deviceListMetadataVersion: 2
     }
   },
+<<<<<<< HEAD
   body: 'hola',
   from: '56958349134'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_675bc6ac-cd51-491f-9678-e65869fa81ef',
   keyword: 'key_4825aecb-f007-4546-9a6e-76afcfa4c208',
+=======
+  body: 'me gusta el helado',
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_36bc8cd0-9128-4a43-a63f-84223bb7e3e5',
+  keyword: 'key_f7157faf-f893-4363-9da5-bce92119dbbb',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: '__call_action__',
   options: {
     media: null,
@@ -34,11 +56,19 @@
     keyword: {},
     callback: true
   },
+<<<<<<< HEAD
   refSerialize: '55fc59c957a68e184e8c7a949c41332b'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_40a75e2d-1cfe-4806-b7db-1c3e82110e8c',
   keyword: 'ans_675bc6ac-cd51-491f-9678-e65869fa81ef',
+=======
+  refSerialize: '57bb34fe064c20199bc387e8f8fb6ad0'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_0257e1c0-a6a0-4f9c-814d-a5d75a9cdee2',
+  keyword: 'ans_36bc8cd0-9128-4a43-a63f-84223bb7e3e5',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: 'Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.',
   options: {
     media: null,
@@ -52,11 +82,19 @@
     keyword: {},
     callback: false
   },
+<<<<<<< HEAD
   refSerialize: '8f3c0ccaa217ae0713f17ef17e7b3fab'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_9e5af138-fc99-4bae-8c87-c35ce9cdfc4e',
   keyword: 'ans_40a75e2d-1cfe-4806-b7db-1c3e82110e8c',
+=======
+  refSerialize: '7f53e975082dfeb0ace284365948d183'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_37f6899f-4fd1-4491-9a0d-05f77657a477',
+  keyword: 'ans_0257e1c0-a6a0-4f9c-814d-a5d75a9cdee2',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: 'Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones',
   options: {
     media: null,
@@ -70,6 +108,7 @@
     keyword: {},
     callback: false
   },
+<<<<<<< HEAD
   refSerialize: '6d41b4ad96007ef6e8f69326e4ca61b9'
 }
 [handleMsg]:  {
@@ -84,17 +123,42 @@
   broadcast: false,
   message: Message {
     conversation: 'Iniciar',
+=======
+  refSerialize: '049b1d7b5fb579f6639caee512411c4e'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '10ECDBBDAF877FDB0DEC7A11E5EAD3A2',
+    participant: undefined
+  },
+  messageTimestamp: 1725938634,
+  pushName: '(_ _ )',
+  broadcast: false,
+  message: Message {
+    conversation: 'iniciar',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
     messageContextInfo: MessageContextInfo {
       deviceListMetadata: [DeviceListMetadata],
       deviceListMetadataVersion: 2
     }
   },
+<<<<<<< HEAD
   body: 'Iniciar',
   from: '56958349134'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_4ee3cb6d-9e55-4fcb-b147-cc7aec8ef93e',
   keyword: 'key_c9146c95-72aa-4a1e-a217-f9dee5546904',
+=======
+  body: 'iniciar',
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_3b862a81-ce5f-4135-ba4e-e9492c608005',
+  keyword: 'key_a3e278a6-bc94-4aae-a7a2-49eb4a5d0a7d',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: 'espere un momento, se están generando artículos...',
   options: {
     media: null,
@@ -108,11 +172,37 @@
     keyword: {},
     callback: true
   },
+<<<<<<< HEAD
   refSerialize: '66040f95e0a00dd95094fa4e05f33ac6'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_b6bed73c-1ec2-40f5-a60d-cf9916519b24',
   keyword: 'ans_4ee3cb6d-9e55-4fcb-b147-cc7aec8ef93e',
+=======
+  refSerialize: 'a48e0a289292ad775e722fe24abcd65b'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_9184482c-c557-4b87-be93-7d79af18b55c',
+  keyword: 'ans_3b862a81-ce5f-4135-ba4e-e9492c608005',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '1845c07dd0736376d339bad0112b12e2'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_a7ba7cc7-76b3-4019-ab6f-33006349e540',
+  keyword: 'ans_9184482c-c557-4b87-be93-7d79af18b55c',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: '__capture_only_intended__',
   options: {
     media: null,
@@ -126,6 +216,7 @@
     keyword: {},
     callback: true
   },
+<<<<<<< HEAD
   refSerialize: '05d7e767f7505c46350ba917b7ff82ac'
 }
 [handleMsg]:  {
@@ -140,11 +231,28 @@
   broadcast: false,
   message: Message {
     conversation: '9',
+=======
+  refSerialize: '9bb272fd7a35de1b5103cad224fb5204'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '07DFE9EFF4A07E1117F7582E2CE3D98A',
+    participant: undefined
+  },
+  messageTimestamp: 1725938650,
+  pushName: '(_ _ )',
+  broadcast: false,
+  message: Message {
+    conversation: '6',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
     messageContextInfo: MessageContextInfo {
       deviceListMetadata: [DeviceListMetadata],
       deviceListMetadataVersion: 2
     }
   },
+<<<<<<< HEAD
   body: '9',
   from: '56958349134'
 }
@@ -157,6 +265,20 @@
   },
   messageTimestamp: 1728179323,
   pushName: 'Nico',
+=======
+  body: '6',
+  from: '56958139861'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '840CE5D13CF09CC21F0DDCE07CDB8C1A',
+    participant: undefined
+  },
+  messageTimestamp: 1725938669,
+  pushName: '(_ _ )',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   broadcast: false,
   message: Message {
     conversation: '1',
@@ -166,11 +288,19 @@
     }
   },
   body: '1',
+<<<<<<< HEAD
   from: '56958349134'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_53e576d4-dea6-4939-a842-a3edcbd6014b',
   keyword: 'key_3a487e5c-6c90-48fb-a290-7da6feb709eb',
+=======
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_c8b22392-ee97-4748-aa12-84ac6bddd7e2',
+  keyword: 'key_e722c59a-cf66-4cad-b516-647448bd9a79',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: '__call_action__',
   options: {
     media: null,
@@ -184,11 +314,19 @@
     keyword: {},
     callback: true
   },
+<<<<<<< HEAD
   refSerialize: 'd0ad9a35836de15883f31a0e5e37b653'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_6b2903e0-6b53-440e-b59c-eadb230b7904',
   keyword: 'ans_53e576d4-dea6-4939-a842-a3edcbd6014b',
+=======
+  refSerialize: 'cbdfa6e904aa8e6e87d7ce9626f247f6'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b029f950-a14a-4a1e-8bb9-5f0778200423',
+  keyword: 'ans_c8b22392-ee97-4748-aa12-84ac6bddd7e2',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: '__call_action__',
   options: {
     media: null,
@@ -202,6 +340,7 @@
     keyword: {},
     callback: true
   },
+<<<<<<< HEAD
   refSerialize: '7bed6543aa14b863178b8ce952dfa2d3'
 }
 [handleMsg]:  {
@@ -213,6 +352,19 @@
   },
   messageTimestamp: 1728179327,
   pushName: 'Nico',
+=======
+  refSerialize: '499f607cbd5ef66d0936be9268e2e189'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '20915178ACE41891D6DE16F1A9703E46',
+    participant: undefined
+  },
+  messageTimestamp: 1725938678,
+  pushName: '(_ _ )',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   broadcast: false,
   message: Message {
     conversation: '2',
@@ -222,11 +374,19 @@
     }
   },
   body: '2',
+<<<<<<< HEAD
   from: '56958349134'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_82c99638-36e0-4033-9d9d-c265949920bd',
   keyword: 'key_c2a3f639-ae88-4957-aaf5-9cf14d82088b',
+=======
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b1df41db-0b4e-4ba1-bda6-bb73b53c8960',
+  keyword: 'key_949232e2-d301-4ba6-b15e-e40fb3b20e61',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: '__call_action__',
   options: {
     media: null,
@@ -240,6 +400,7 @@
     keyword: {},
     callback: true
   },
+<<<<<<< HEAD
   refSerialize: '41d631442051550cbde5229186bede15'
 }
 [handleMsg]:  {
@@ -251,20 +412,12 @@
   },
   messageTimestamp: 1728179336,
   pushName: 'Nico',
-  broadcast: false,
-  message: Message {
-    conversation: '3',
-    messageContextInfo: MessageContextInfo {
-      deviceListMetadata: [DeviceListMetadata],
-      deviceListMetadataVersion: 2
-    }
-  },
-  body: '3',
-  from: '56958349134'
+=======
+  refSerialize: '77aec10daeb7fb36dbc1e703b9b55ec5'
 }
 [QUEUE_SE_ENVIO]:  {
-  ref: 'ans_e2b57495-b50e-4445-9578-f14a459139dc',
-  keyword: 'key_dcdd07ab-b730-4dd3-9cd7-a75bf360f871',
+  ref: 'ans_630b61ca-15ec-413e-96b2-bf35c0d2af97',
+  keyword: 'ans_b1df41db-0b4e-4ba1-bda6-bb73b53c8960',
   answer: '__call_action__',
   options: {
     media: null,
@@ -278,6 +431,54 @@
     keyword: {},
     callback: true
   },
+  refSerialize: '37f2e6bdeb0092017be21d47eaba8dfe'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '13B700E5C38244EF1F5E5344C648BDE3',
+    participant: undefined
+  },
+  messageTimestamp: 1725938702,
+  pushName: '(_ _ )',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
+  broadcast: false,
+  message: Message {
+    conversation: '3',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '3',
+<<<<<<< HEAD
+  from: '56958349134'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_e2b57495-b50e-4445-9578-f14a459139dc',
+  keyword: 'key_dcdd07ab-b730-4dd3-9cd7-a75bf360f871',
+=======
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_c171905d-a699-4471-979d-983339582c36',
+  keyword: 'key_e9c95672-5182-446b-8b97-63b0276e33cf',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+<<<<<<< HEAD
   refSerialize: 'd670868a9dd940946ae0cd9b7a1ba4b4'
 }
 [handleMsg]:  {
@@ -289,6 +490,19 @@
   },
   messageTimestamp: 1728179346,
   pushName: 'Nico',
+=======
+  refSerialize: 'b8c955a4d95d3387958528c56559332d'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: 'A8DCEEEC1A5985224C9FE5298B0A1251',
+    participant: undefined
+  },
+  messageTimestamp: 1725938720,
+  pushName: '(_ _ )',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   broadcast: false,
   message: Message {
     conversation: 'contactar',
@@ -298,11 +512,19 @@
     }
   },
   body: 'contactar',
+<<<<<<< HEAD
   from: '56958349134'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_67bc276c-eb3c-410e-977c-77c13a840ca8',
   keyword: 'key_4d81e374-7800-4bf9-b8ee-219da1f54f41',
+=======
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_e5c2e254-04d1-4daa-99db-a25ca0073d3f',
+  keyword: 'key_5e4836c3-962a-4288-9f07-e057fe674f48',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: 'Gracias por haber sostenido esta conversación. Recuerda, soy Lara la divulgadora de innovaciones de la UACh',
   options: {
     media: null,
@@ -316,11 +538,19 @@
     keyword: {},
     callback: false
   },
+<<<<<<< HEAD
   refSerialize: '397c77dcbc39749120bf4481705a2f46'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_ee6e7139-534c-4630-8a43-44dd92aa2b28',
   keyword: 'ans_67bc276c-eb3c-410e-977c-77c13a840ca8',
+=======
+  refSerialize: '9a4728371d100347872d067b436d82ae'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_121a0b78-f8f0-476e-a90a-d2680d6d2590',
+  keyword: 'ans_e5c2e254-04d1-4daa-99db-a25ca0073d3f',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: 'Puedes escribirme a oficina.otl@uach.cl o seguirme en instagram https://www.instagram.com/otl_uach/',
   options: {
     media: null,
@@ -334,11 +564,19 @@
     keyword: {},
     callback: false
   },
+<<<<<<< HEAD
   refSerialize: '4d598f9876c654c133d301ae20183cca'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_cb75c9ca-75d0-47a5-864b-89b1e991f7f0',
   keyword: 'ans_ee6e7139-534c-4630-8a43-44dd92aa2b28',
+=======
+  refSerialize: '9d7f7b48918ae6431985154771954684'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_fbae3a50-85f6-4a5b-9f65-90d99bde4873',
+  keyword: 'ans_121a0b78-f8f0-476e-a90a-d2680d6d2590',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: '__call_action__',
   options: {
     media: null,
@@ -352,6 +590,7 @@
     keyword: {},
     callback: true
   },
+<<<<<<< HEAD
   refSerialize: '40b9d886e9f596d73bf6b59035cc0832'
 }
 [handleMsg]:  {
@@ -363,6 +602,19 @@
   },
   messageTimestamp: 1728179363,
   pushName: 'Nico',
+=======
+  refSerialize: '51f5e098740c366eafc5585cc5310929'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '7465AAD7C46DD91C29EEA918614B5034',
+    participant: undefined
+  },
+  messageTimestamp: 1725938725,
+  pushName: '(_ _ )',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   broadcast: false,
   message: Message {
     conversation: 'reset',
@@ -372,12 +624,21 @@
     }
   },
   body: 'reset',
+<<<<<<< HEAD
   from: '56958349134'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_61b10bee-9881-4681-b743-a960156aea55',
   keyword: 'key_eefdd364-adc1-47cb-ab52-80f701c69500',
   answer: 'generando artículos...',
+=======
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_e69e94f6-74ad-4e32-b56c-ad9b13902d5a',
+  keyword: 'key_f56d8875-b1e6-4310-b80f-2bc90a53d178',
+  answer: 'espere un momento, se están generando artículos...',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   options: {
     media: null,
     buttons: [],
@@ -390,11 +651,37 @@
     keyword: {},
     callback: true
   },
+<<<<<<< HEAD
   refSerialize: 'f143c5ef515e4b4e5f8bbb3161a86d36'
 }
 [QUEUE_SE_ENVIO]:  {
   ref: 'ans_1e7e2e51-8fe5-496c-b135-3f7f5c11608c',
   keyword: 'ans_61b10bee-9881-4681-b743-a960156aea55',
+=======
+  refSerialize: 'befee3d14a0ff88dee621f18a4481aef'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_6279b297-f312-46dd-b241-9a769bafd8ac',
+  keyword: 'ans_e69e94f6-74ad-4e32-b56c-ad9b13902d5a',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '38b15b2ffde64dcc043c4b09f6e7d68b'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b7fe0b00-b67b-413b-b907-6c7b8f4fbd90',
+  keyword: 'ans_6279b297-f312-46dd-b241-9a769bafd8ac',
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
   answer: '__capture_only_intended__',
   options: {
     media: null,
@@ -408,5 +695,253 @@
     keyword: {},
     callback: true
   },
+<<<<<<< HEAD
   refSerialize: 'aafc372db725b6a92e9f1536f128b527'
+=======
+  refSerialize: '15ce594bc1fdd6cfa4b9cfba7a0b73d3'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '2AF9F0A4325CAE9F1B0355063D15A5CF',
+    participant: undefined
+  },
+  messageTimestamp: 1725938760,
+  pushName: '(_ _ )',
+  broadcast: false,
+  message: Message {
+    conversation: '1',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  from: '56958139861'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '2A525B5C41797F2F6BEA4E1ADEA1A905',
+    participant: undefined
+  },
+  messageTimestamp: 1725938768,
+  pushName: '(_ _ )',
+  broadcast: false,
+  message: Message {
+    conversation: '1',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_c8b22392-ee97-4748-aa12-84ac6bddd7e2',
+  keyword: 'key_e722c59a-cf66-4cad-b516-647448bd9a79',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'cbdfa6e904aa8e6e87d7ce9626f247f6'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b029f950-a14a-4a1e-8bb9-5f0778200423',
+  keyword: 'ans_c8b22392-ee97-4748-aa12-84ac6bddd7e2',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '499f607cbd5ef66d0936be9268e2e189'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '3C1B46762C3694B7D8E45FD6C5A794B9',
+    participant: undefined
+  },
+  messageTimestamp: 1725938777,
+  pushName: '(_ _ )',
+  broadcast: false,
+  message: Message {
+    conversation: '2',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '2',
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_b1df41db-0b4e-4ba1-bda6-bb73b53c8960',
+  keyword: 'key_949232e2-d301-4ba6-b15e-e40fb3b20e61',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '77aec10daeb7fb36dbc1e703b9b55ec5'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_630b61ca-15ec-413e-96b2-bf35c0d2af97',
+  keyword: 'ans_b1df41db-0b4e-4ba1-bda6-bb73b53c8960',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '37f2e6bdeb0092017be21d47eaba8dfe'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: '9EA689E7270870B3DA1D56F0A5A649BB',
+    participant: undefined
+  },
+  messageTimestamp: 1725938783,
+  pushName: '(_ _ )',
+  broadcast: false,
+  message: Message {
+    conversation: '3',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '3',
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_c171905d-a699-4471-979d-983339582c36',
+  keyword: 'key_e9c95672-5182-446b-8b97-63b0276e33cf',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'b8c955a4d95d3387958528c56559332d'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958139861@s.whatsapp.net',
+    fromMe: false,
+    id: 'EF209FD9BC9E240E5354B676B85C8587',
+    participant: undefined
+  },
+  messageTimestamp: 1725938793,
+  pushName: '(_ _ )',
+  broadcast: false,
+  message: Message {
+    conversation: 'contactar',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'contactar',
+  from: '56958139861'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_e5c2e254-04d1-4daa-99db-a25ca0073d3f',
+  keyword: 'key_5e4836c3-962a-4288-9f07-e057fe674f48',
+  answer: 'Gracias por haber sostenido esta conversación. Recuerda, soy Lara la divulgadora de innovaciones de la UACh',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '9a4728371d100347872d067b436d82ae'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_121a0b78-f8f0-476e-a90a-d2680d6d2590',
+  keyword: 'ans_e5c2e254-04d1-4daa-99db-a25ca0073d3f',
+  answer: 'Puedes escribirme a oficina.otl@uach.cl o seguirme en instagram https://www.instagram.com/otl_uach/',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '9d7f7b48918ae6431985154771954684'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_fbae3a50-85f6-4a5b-9f65-90d99bde4873',
+  keyword: 'ans_121a0b78-f8f0-476e-a90a-d2680d6d2590',
+  answer: '__call_action__',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '51f5e098740c366eafc5585cc5310929'
+>>>>>>> 6967d5218848ac064007eb82e3173f3023b3f37a
 }
