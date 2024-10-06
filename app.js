@@ -8,6 +8,7 @@ import {
     getDoc,
     setDoc
 } from 'firebase/firestore';
+import cron from 'node-cron';
 import { initializeApp } from 'firebase/app'; // Importar Firebase App
 import pkgBot from '@bot-whatsapp/bot';
 import QRPortalWeb from '@bot-whatsapp/portal';
@@ -52,6 +53,15 @@ const guardarSesion = async (session) => {
     const sessionRef = doc(database, 'whatsapp-sessions', 'default-session');
     await setDoc(sessionRef, { session });
     console.log("Sesión guardada en Firebase.");
+};
+const guardarArticulosEnFirebase = async (articulos) => {
+    const batch = [];
+    for (const articulo of articulos) {
+        const articuloRef = doc(database, 'articulos', articulo.indice.toString());
+        batch.push(setDoc(articuloRef, articulo));
+    }
+    await Promise.all(batch);
+    console.log('Artículos actualizados en Firebase.');
 };
 // Función para verificar el usuario
 const verificarUsuario = async (contexto, textoPagina) => {
@@ -168,15 +178,37 @@ function agregarNumerosAleatorios(array, tamaño) {
     }
     return Array.from(indicesAleatorios);
 }
-
-const main = async () => {
+const ejecutarScrapingDiario = async () => {
     try {
-        console.log('Uso inicial de memoria:', process.memoryUsage());
-        const arregloArticulos = await fetchArticlesConcurrently(3);
-        console.log('Uso de memoria después de fetchArticles:', process.memoryUsage());
-        
-        const textoPagina = await processArticles(arregloArticulos);
-        console.log('Uso de memoria después de processArticles:', process.memoryUsage());
+        console.log('Iniciando scraping manual...');
+        const articles = await fetchArticlesConcurrently();
+        console.log("articles");
+        const processedArticles = await processArticles(articles);
+        console.log("process articles");
+        await guardarArticulosEnFirebase(processedArticles);
+        console.log('Scraping y actualización de artículos completado.');
+    } catch (error) {
+        console.error('Error durante el scraping manual:', error);
+    }
+};
+
+const obtenerArticulosDesdeFirebase = async () => {
+    const articlesRef = collection(database, 'articulos');
+    const articlesSnap = await getDocs(articlesRef);
+
+    const articles = [];
+    articlesSnap.forEach(doc => {
+        articles.push(doc.data());
+    });
+
+    return articles;
+};
+cron.schedule('0 3 * * *', async () => {
+    await ejecutarScrapingDiario();
+});
+const main = async () => {
+        const scraping = await ejecutarScrapingDiario();
+        const textoPagina= await obtenerArticulosDesdeFirebase();
         let art = 1;
         let user;
         const arregloAleatorio = [];
@@ -361,6 +393,7 @@ const main = async () => {
 
         const flowPrincipal = addKeyword(EVENTS.WELCOME, { sensitive: true })
             .addAction(async (ctx, { flowDynamic }) => {
+                console.log(ctx);
                 user = await verificarUsuario(ctx, textoPagina);
                 await flowDynamic([
                     {
@@ -383,9 +416,7 @@ const main = async () => {
         });
 
         QRPortalWeb();
-    } catch (error) {
-        console.error('Error en main:', error);
-    }
+    
 };
 
 main();

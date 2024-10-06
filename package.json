@@ -3,13 +3,12 @@
     "version": "1.0.0",
     "description": "",
     "main": "app.js",
-    
-  "type": "module",
+    "type": "module",
     "scripts": {
         "prestart": "npx eslint .",
         "pre-copy": "cd .. && npm run  copy.lib base-baileys-memory",
         "start": "node app.js"
-    },    
+    },
     "keywords": [],
     "dependencies": {
         "@bot-whatsapp/bot": "latest",
@@ -27,6 +26,7 @@
         "jimp": "^0.16.1",
         "jsdom": "^23.2.0",
         "link-preview-js": "^3.0.5",
+        "node-cron": "^3.0.3",
         "node-fetch": "^3.3.2",
         "wa-sticker-formatter": "4.4.4"
     },
