@@ -16,6 +16,8 @@
         "@bot-whatsapp/database": "latest",
         "@bot-whatsapp/portal": "latest",
         "@bot-whatsapp/provider": "latest",
+        "@builderbot/bot": "^1.2.2",
+        "@builderbot/provider-baileys": "^1.2.2",
         "@whiskeysockets/baileys": "6.5.0",
         "axios": "^1.6.8",
         "cache-manager": "5.2.4",

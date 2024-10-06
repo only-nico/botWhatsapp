@@ -9,24 +9,21 @@ import {
     setDoc
 } from 'firebase/firestore';
 import cron from 'node-cron';
-import { initializeApp } from 'firebase/app'; // Importar Firebase App
-import pkgBot from '@bot-whatsapp/bot';
-import QRPortalWeb from '@bot-whatsapp/portal';
-import BaileysProvider from '@bot-whatsapp/provider/baileys';
-import MockAdapter from '@bot-whatsapp/database/mock';
+import pkgBot from '@builderbot/bot';
+import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
+import { MemoryDB as Database } from '@builderbot/bot'
 import { fetchArticlesConcurrently, processArticles } from './articulos.js';
-
 const { EVENTS, createBot, createProvider, createFlow, addKeyword } = pkgBot;
 
 // Inicializar la aplicación de Firebase
-
+const PORT = 3000
 const database = getFirestore(); // Usa firebaseApp
 
 const cantidad = 3;
 
 // Función para cargar la sesión desde Firebase
 const cargarSesion = async () => {
-    const sessionRef = doc(database, 'whatsapp-sessions', 'default-session');
+    const sessionRef = await doc(database, 'whatsapp-sessions', 'default-session');
     const sessionDoc = await getDoc(sessionRef);
     if (sessionDoc.exists()) {
         const data = sessionDoc.data();
@@ -50,7 +47,7 @@ const guardarSesion = async (session) => {
         return;
     }
 
-    const sessionRef = doc(database, 'whatsapp-sessions', 'default-session');
+    const sessionRef = await doc(database, 'whatsapp-sessions', 'default-session');
     await setDoc(sessionRef, { session });
     console.log("Sesión guardada en Firebase.");
 };
@@ -416,17 +413,20 @@ const main = async () => {
             .addAnswer('Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.', { delay: 1000 })
             .addAnswer('Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones', { delay: 1000 });
 
-        const adapterDB = new MockAdapter();
-        const adapterFlow = createFlow([flowPrincipal, flowPrincipal2, flowPrincipal3, flowEnviarArray, flowSecundario, flowAcademico, flowTerciario, flowDespedida]);
-        const adapterProvider = createProvider(BaileysProvider);
+        
+        const adapterFlow = await createFlow([flowPrincipal, flowPrincipal2, flowPrincipal3, flowEnviarArray, flowSecundario, flowAcademico, flowTerciario, flowDespedida]);
+        const adapterProvider =  await createProvider(Provider)
+        const adapterDB = await new Database()
+        
 
-        createBot({
+        const { httpServer } = await createBot({
             flow: adapterFlow,
             provider: adapterProvider,
             database: adapterDB,
-        });
-
-        QRPortalWeb();
+        })
+        httpServer(+PORT)
+        
+       
     
 };
 
