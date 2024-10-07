@@ -34,4 +34,4 @@ COPY --from=builder /app/package.json /app/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --production
 
 # Define the command to start the application using PM2 runtime
-CMD ["pm2-runtime", "start", "./src/app.js", "--cron", "0 */12 * * *"]
+CMD ["pm2-runtime", "start", "app.js", "--cron", "0 */12 * * *"]
