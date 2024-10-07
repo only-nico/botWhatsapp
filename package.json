@@ -30,6 +30,7 @@
         "link-preview-js": "^3.0.5",
         "node-cron": "^3.0.3",
         "node-fetch": "^3.3.2",
+        "pm2": "^5.4.2",
         "wa-sticker-formatter": "4.4.4"
     },
     "devDependencies": {
