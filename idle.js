@@ -26,7 +26,6 @@ function resetInactividad(ctx, gotoFlow, tiempo) {
   // Si ya hay un temporizador en marcha para el usuario, lo cancelamos
   stopInactividad(ctx);
   if (timers[ctx.from]) {
-    console.log(`REINICIAMOS cuenta atrás para el usuario ${ctx.from}!`);
     clearTimeout(timers[ctx.from]);
   }
   // Iniciamos un nuevo temporizador

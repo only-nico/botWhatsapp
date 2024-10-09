@@ -24,36 +24,7 @@ const database = getFirestore(); // Usa firebaseApp
 const cantidad = 3;
 
 
-// Función para cargar la sesión desde Firebase
-const cargarSesion = async () => {
-    const sessionRef = await doc(database, 'whatsapp-sessions', 'default-session');
-    const sessionDoc = await getDoc(sessionRef);
-    if (sessionDoc.exists()) {
-        const data = sessionDoc.data();
-        if (data && data.session) {
-            console.log("Sesión cargada desde Firebase.");
-            return data.session;
-        } else {
-            console.log("No se encontró una sesión válida.");
-            return null;
-        }
-    } else {
-        console.log("No se encontró una sesión previa.");
-        return null;
-    }
-};
 
-// Función para guardar la sesión en Firebase
-const guardarSesion = async (session) => {
-    if (session === undefined) {
-        console.error('Error: el valor de la sesión es undefined y no se puede guardar en Firestore.');
-        return;
-    }
-
-    const sessionRef = await doc(database, 'whatsapp-sessions', 'default-session');
-    await setDoc(sessionRef, { session });
-    console.log("Sesión guardada en Firebase.");
-};
 const guardarArticulosEnFirebase = async (articulos) => {
     const batch = [];
     for (const articulo of articulos) {
@@ -182,11 +153,8 @@ const ejecutarScrapingDiario = async () => {
     try {
         console.log('Iniciando scraping manual...');
         const articles = await fetchArticlesConcurrently();
-        console.log("articles");
         const processedArticles = await processArticles(articles);
-        console.log("process articles");
         await guardarArticulosEnFirebase(processedArticles);
-        console.log('Scraping y actualización de artículos completado.');
     } catch (error) {
         console.error('Error durante el scraping manual:', error);
     }
@@ -202,14 +170,6 @@ const obtenerArticulosDesdeFirebase = async () => {
     });
 
     return articles;
-};
-const logMemoryUsage = () => {
-    const memoryUsage = process.memoryUsage();
-    console.log(`Memory Usage (in MB):
-        RSS: ${(memoryUsage.rss / 1024 / 1024).toFixed(2)} MB,
-        Heap Total: ${(memoryUsage.heapTotal / 1024 / 1024).toFixed(2)} MB,
-        Heap Used: ${(memoryUsage.heapUsed / 1024 / 1024).toFixed(2)} MB,
-        External: ${(memoryUsage.external / 1024 / 1024).toFixed(2)} MB`);
 };
 cron.schedule('0 3 * * *', async () => {
     await ejecutarScrapingDiario();
@@ -332,7 +292,6 @@ const main = async () => {
                 { delay: 1000 },
                 async (ctx, { provider, flowDynamic, endFlow }) => {
                     try {
-                        const session = await cargarSesion(); // Cargar sesión antes de enviar mensajes
                         for (let index = 0; index < cantidad; index++) {
                             const itemIndex = user.arregloActual;
                             if (itemIndex[index] >= 0 && itemIndex[index] < textoPagina.length) {
@@ -355,7 +314,6 @@ const main = async () => {
                                 console.error(`Índice fuera de rango: ${itemIndex[index]}`);
                             }
                         }
-                        await guardarSesion(session); // Guardar sesión después de enviar mensajes
                     } catch (error) {
                         console.error('Error en la construcción del mensaje en flowPrincipal2:', error.message);
                         console.error('Stack trace:', error.stack);
@@ -375,7 +333,6 @@ const main = async () => {
             .addAction(
                 { capture: true },
                 async (ctx, { gotoFlow, state }) => {
-                    console.log('mensaje recibido: ', ctx.body);
                     if (!isNaN(ctx.body)) {
                         try {
                             await state.update({ i: parseInt(ctx.body) });

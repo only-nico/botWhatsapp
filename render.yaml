@@ -1,0 +1,11 @@
+version: 1
+services:
+  - type: docker
+    name: my-docker-app
+    env: docker
+    dockerfilePath: Dockerfile
+    autoDeploy: true
+    volumes:
+      - type: volume
+        name: bot_sessions_volume
+        mountPath: /usr/src/app/bot_sessions

@@ -130,27 +130,21 @@ const fetchImageSrcAndHeadingText = async (url) => {
         if (document) {
             // Selecciona el div que contiene el widget de imagen
             const imgWidget = document.querySelector('div.elementor-column.elementor-col-33.elementor-top-column.elementor-element.elementor-element-f4674ec');
-            //console.log('imgWidget:', imgWidget);
 
             let imgSrc = 'No se encontró src';  // Valor predeterminado
             if (imgWidget) {
                 const imgWidget2 = imgWidget.querySelector('div.elementor-widget-wrap.elementor-element-populated');
-                //console.log('imgWidget2:', imgWidget2);
 
                 const imgWidget3 = imgWidget2 ? imgWidget2.querySelector('div.elementor-container.elementor-column-gap-no') : null;
-                //console.log('imgWidget3:', imgWidget3);
 
                 const imgWidget4 = imgWidget3 ? imgWidget3.querySelector('div.elementor-image') : null;
-                //console.log('imgWidget4:', imgWidget4);
 
                 // Verifica que imgWidget4 no sea null y contiene el <img>
                 if (imgWidget4) {
                     const imgWidget5 = imgWidget4.querySelector('img');
-                    //console.log('imgWidget5:', imgWidget5);
 
                     // Accede al <img> dentro de imgWidget4 y obtén el atributo src
                     imgSrc = imgWidget5 ? imgWidget5.getAttribute('src') : '';
-                    //console.log('Imagen src:', imgSrc);
                 } else {
                     console.log('No se encontró el div del widget de imagen.');
                 }
@@ -193,7 +187,6 @@ const processArticles = async (articles) => {
         if(videoLink==""){
             videoLink=fragmentoLink;
         }
-        //console.log({ headingText,imgSrc });
         if (imgSrc === undefined || imgSrc === '') {
             imgSrc = src; // Reemplaza 'default-src' con el valor que desees asignar
         }

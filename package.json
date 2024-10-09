@@ -13,9 +13,9 @@
     "dependencies": {
         "@bot-whatsapp/bot": "latest",
         "@bot-whatsapp/cli": "latest",
-        "@bot-whatsapp/database": "latest",
+        "@bot-whatsapp/database": "^0.0.1",
         "@bot-whatsapp/portal": "latest",
-        "@bot-whatsapp/provider": "latest",
+        "@bot-whatsapp/provider": "^0.1.2",
         "@builderbot/bot": "^1.2.2",
         "@builderbot/provider-baileys": "^1.2.2",
         "@whiskeysockets/baileys": "6.5.0",
@@ -31,7 +31,7 @@
         "node-cron": "^3.0.3",
         "node-fetch": "^3.3.2",
         "pm2": "^5.4.2",
-        "wa-sticker-formatter": "4.4.4"
+        "wa-sticker-formatter": "^1.6.0"
     },
     "devDependencies": {
         "eslint": "^8.52.0",
