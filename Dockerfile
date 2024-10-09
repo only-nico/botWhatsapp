@@ -8,6 +8,9 @@ ENV PNPM_HOME=/usr/local/bin
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
+# Install build dependencies for Sharp
+RUN apk add --no-cache vips vips-dev build-base gcc g++ make
+
 # Copy package.json and pnpm-lock.yaml files to the working directory
 COPY package*.json pnpm-lock.yaml ./ 
 
@@ -29,7 +32,7 @@ FROM builder as deploy
 # Set the working directory inside the deployment stage
 WORKDIR /usr/src/app
 
-# Copy necessary files for deployment (with the correct path)
+# Copy necessary files for deployment
 COPY --from=builder /usr/src/app/app.js ./app.js
 COPY --from=builder /usr/src/app/package.json /usr/src/app/pnpm-lock.yaml ./
 
