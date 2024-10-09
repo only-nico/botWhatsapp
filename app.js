@@ -13,6 +13,8 @@ import pkgBot from '@builderbot/bot';
 import { BaileysProvider as Provider } from '@builderbot/provider-baileys'
 import { MemoryDB as Database } from '@builderbot/bot'
 import { fetchArticlesConcurrently, processArticles } from './articulos.js';
+import { flowInactividad, startInactividad, resetInactividad, stopInactividad,
+} from "./idle.js";
 const { EVENTS, createBot, createProvider, createFlow, addKeyword } = pkgBot;
 
 // Inicializar la aplicación de Firebase
@@ -20,6 +22,7 @@ const PORT = 3000
 const database = getFirestore(); // Usa firebaseApp
 
 const cantidad = 3;
+
 
 // Función para cargar la sesión desde Firebase
 const cargarSesion = async () => {
@@ -200,6 +203,14 @@ const obtenerArticulosDesdeFirebase = async () => {
 
     return articles;
 };
+const logMemoryUsage = () => {
+    const memoryUsage = process.memoryUsage();
+    console.log(`Memory Usage (in MB):
+        RSS: ${(memoryUsage.rss / 1024 / 1024).toFixed(2)} MB,
+        Heap Total: ${(memoryUsage.heapTotal / 1024 / 1024).toFixed(2)} MB,
+        Heap Used: ${(memoryUsage.heapUsed / 1024 / 1024).toFixed(2)} MB,
+        External: ${(memoryUsage.external / 1024 / 1024).toFixed(2)} MB`);
+};
 cron.schedule('0 3 * * *', async () => {
     await ejecutarScrapingDiario();
 });
@@ -222,199 +233,244 @@ const main = async () => {
             arregloAleatorio.push(textoPagina[numeroEnteroAleatorio]);
         }
 
+        // Flujo de despedida
         const flowDespedida = addKeyword(['chao', 'CHAO', 'Chao', 'adios', 'Contactar', 'contactar', 'Contactar'], { sensitive: true })
-            .addAnswer('Gracias por haber sostenido esta conversación. Recuerda, soy Lara la divulgadora de innovaciones de la UACh')
-            .addAnswer('Puedes escribirme a oficina.otl@uach.cl o seguirme en instagram https://www.instagram.com/otl_uach/')
-            .addAction(
-                async (_, { flowDynamic }) => {
-                    await flowDynamic([
-                        {
-                            body: 'Comparte mi contacto con esta imagen, o con el siguiente link \nhttps://wa.me/qr/URVPLRVME6GNM1',
-                            media: 'imgs/laraqr.jpg'
-                        }
-                    ]);
-                }
-            );
+            .addAction(async (ctx, { flowDynamic, endFlow }) => {
+                // Iniciar el temporizador de inactividad
+                resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
 
-        const flowTerciario = addKeyword('3', { sensitive: true }).addAction(
-            async (_, { flowDynamic, state }) => {
-                const myState = state.getMyState();
-                return await flowDynamic('más información: ' + textoPagina[myState.i - 1].fragmentoLink + '\n\nEstamos muy agradecidos de esta conversación contigo. Te proponemos seguir conociendo un poco más sobre innovaciones? \nDigita *Reset* para que te comparta otras tres iniciativas\n\nSi te interesa ser contactado en las próximas horas por una persona de la Dirección de Innovación UACh, digita *Contactar*');
+                await flowDynamic([
+                    {
+                        body: 'Gracias por haber sostenido esta conversación. Recuerda, soy Lara la divulgadora de innovaciones de la UACh'
+                    },
+                    {
+                        body: 'Puedes escribirme a oficina.otl@uach.cl o seguirme en instagram https://www.instagram.com/otl_uach/'
+                    },
+                    {
+                        body: 'Comparte mi contacto con esta imagen, o con el siguiente link \nhttps://wa.me/qr/URVPLRVME6GNM1',
+                        media: 'imgs/laraqr.jpg'
+                    }
+                ]);
             });
 
-        const flowAcademico = addKeyword('2', { sensitive: true })
-            .addAction(
-                async (_, { flowDynamic, state }) => {
-                    try {
-                        const myState = state.getMyState();
-                        const e = textoPagina[myState.i - 1];
-                        let imagen = e.imgSrc;
-                        console.log(imagen);
-                        await flowDynamic([{
-                            body: `${e.indice} - *${e.fragmentoTitulo}* \n El investigador responsable de este proyecto es *${e.headingText}*`,
-                            media: imagen
-                        }]);
-                    } catch (error) {
-                        console.error('Error en flowAcademico:', error);
-                    }
-                }
-            ).addAction(
-                async (_, { flowDynamic }) => {
-                    await flowDynamic([
-                        { body: 'Excelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *3* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*' }
-                    ]);
-                }
-                , [flowTerciario]);
-        
-        const flowSecundario = addKeyword('1', { sensitive: true }).addAction(
-            async (_, { flowDynamic, state }) => {
+        // Flujo terciario
+        const flowTerciario = addKeyword('3', { sensitive: true })
+            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+                // Iniciar el temporizador de inactividad
+                resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
                 const myState = state.getMyState();
-                return await flowDynamic(textoPagina[myState.i-1].indice+" - *"+textoPagina[myState.i-1].fragmentoTitulo+"*\n\n"+ textoPagina[myState.i - 1].solutionText);
-            }, [flowAcademico])
-            .addAction(async (_, { flowDynamic}) => {
-                await flowDynamic([{
-                    body: `Muy bien, gracias por interesarte en nuestro trabajo \n¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *2* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
-                }]);
-            }, [flowAcademico]);
+                await flowDynamic(`más información: ${textoPagina[myState.i - 1].fragmentoLink}\n\nEstamos muy agradecidos de esta conversación contigo. Te proponemos seguir conociendo un poco más sobre innovaciones? \nDigita *Reset* para que te comparta otras tres iniciativas\n\nSi te interesa ser contactado en las próximas horas por una persona de la Dirección de Innovación UACh, digita *Contactar*`);
+            });
 
-        const flowEnviarArray = addKeyword('0', { sensitive: true })
-            .addAction(
-                async (_, { flowDynamic, state }) => {
-                    const myState = state.getMyState();
-                    const e = textoPagina[myState.i-1];
-                    await flowDynamic([{
-                        body: `${e.indice} - *${e.fragmentoTitulo}* \n${e.problematicText}`,
-                        media: textoPagina[myState.i - 1].src
-                    }]);
-                })
-            .addAction(async (_, { flowDynamic}) => {
-                await flowDynamic([{
-                    body: `Excelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *1* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
-                }]);
-            }, [flowSecundario]);
-
-
-        const flowPrincipal2 = addKeyword(["iniciar", "Iniciar", "INICIAR", "Return", "RETURN", "return"], { sensitive: true }).addAnswer(
-            'espere un momento, se están generando artículos...',
-            { delay: 1000 },
-            async (_, { provider, flowDynamic }) => {
+        // Flujo académico
+        const flowAcademico = addKeyword('2', { sensitive: true })
+            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
                 try {
-                    const session = await cargarSesion(); // Cargar sesión antes de enviar mensajes
-                    for (let index = 0; index < cantidad; index++) {
-                        const itemIndex = user.arregloActual;
-                 
-                        if (itemIndex[index] >= 0 && itemIndex[index] < textoPagina.length ) {
-                            const e = textoPagina[itemIndex[index]];
-                            
-                            if (e && e.indice !== undefined && e.fragmentoTitulo && e.fragmentoTexto) {
-                                let bodyMessage; 
-                                bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
-                                const mediaSrc = e.src || '';  
-                                
-                                try {
-                                    await flowDynamic([
-                                        {
-                                            body: bodyMessage,
-                                            media: mediaSrc
-                                        }
-                                    ]);
-                                } catch (error) {
-                                    console.error('Error durante la ejecución de flowDynamic:', error);
-                                }
-                            } else {
-                                console.error('Elemento de textoPagina no tiene la estructura esperada:', e);
-                            }
-                        } else {
-                            console.error(`Índice fuera de rango: ${itemIndex[index]}`);
-                        }
-                    }
-                    await guardarSesion(session); // Guardar sesión después de enviar mensajes
+                    const myState = state.getMyState();
+                    const e = textoPagina[myState.i - 1];
+                    let imagen = e.imgSrc;
+
+                    await flowDynamic([{
+                        body: `${e.indice} - *${e.fragmentoTitulo}* \n El investigador responsable de este proyecto es *${e.headingText}*`,
+                        media: imagen
+                    }]);
                 } catch (error) {
-                    console.error('Error en la construcción del mensaje en flowPrincipal2:', error.message);
-                    console.error('Stack trace:', error.stack);
+                    console.error('Error en flowAcademico:', error);
                 }
             })
+            .addAction(async (ctx, { flowDynamic, endFlow }) => {
+                // Iniciar el temporizador de inactividad
+                resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+
+                await flowDynamic([
+                    { body: 'Excelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *3* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*' }
+                ]);
+            });
+
+        // Flujo secundario
+        const flowSecundario = addKeyword('1', { sensitive: true })
+            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+                const myState = state.getMyState();
+                await flowDynamic(`${textoPagina[myState.i - 1].indice} - *${textoPagina[myState.i - 1].fragmentoTitulo}*\n\n${textoPagina[myState.i - 1].solutionText}`);
+            })
+            .addAction(async (ctx, { flowDynamic, endFlow }) => {
+                // Iniciar el temporizador de inactividad
+                resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+
+                await flowDynamic([
+                    { body: `Muy bien, gracias por interesarte en nuestro trabajo \n¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *2* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*` }
+                ]);
+            });
+
+        // Flujo para enviar array
+        const flowEnviarArray = addKeyword('0', { sensitive: true })
+            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+                const myState = state.getMyState();
+                const e = textoPagina[myState.i - 1];
+
+                await flowDynamic([{
+                    body: `${e.indice} - *${e.fragmentoTitulo}* \n${e.problematicText}`,
+                    media: textoPagina[myState.i - 1].src
+                }]);
+            })
+            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+                // Iniciar el temporizador de inactividad
+                await resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+
+                await flowDynamic([{
+                    body: `Excelente, ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *1* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
+                }]);
+            }).addAction( { capture: true },
+                async (ctx, { gotoFlow, state }) => {
+                    return gotoFlow(flowSecundario);
+                });
+
+        // Flujo principal 2
+        const flowPrincipal2 = addKeyword(["iniciar", "Iniciar", "INICIAR", "Return", "RETURN", "return"], { sensitive: true })
+            .addAnswer(
+                'espere un momento, se están generando artículos...',
+                { delay: 1000 },
+                async (ctx, { provider, flowDynamic, endFlow }) => {
+                    try {
+                        const session = await cargarSesion(); // Cargar sesión antes de enviar mensajes
+                        for (let index = 0; index < cantidad; index++) {
+                            const itemIndex = user.arregloActual;
+                            if (itemIndex[index] >= 0 && itemIndex[index] < textoPagina.length) {
+                                const e = textoPagina[itemIndex[index]];
+                                if (e && e.indice !== undefined && e.fragmentoTitulo && e.fragmentoTexto) {
+                                    let bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
+                                    const mediaSrc = e.src || '';
+                                    try {
+                                        await flowDynamic([{
+                                            body: bodyMessage,
+                                            media: mediaSrc
+                                        }]);
+                                    } catch (error) {
+                                        console.error('Error durante la ejecución de flowDynamic:', error);
+                                    }
+                                } else {
+                                    console.error('Elemento de textoPagina no tiene la estructura esperada:', e);
+                                }
+                            } else {
+                                console.error(`Índice fuera de rango: ${itemIndex[index]}`);
+                            }
+                        }
+                        await guardarSesion(session); // Guardar sesión después de enviar mensajes
+                    } catch (error) {
+                        console.error('Error en la construcción del mensaje en flowPrincipal2:', error.message);
+                        console.error('Stack trace:', error.stack);
+                    }
+                }
+            )
             .addAction(
-                async (ctx, { flowDynamic }) => {
+                async (ctx, { flowDynamic, endFlow }) => {
+                    // Iniciar el temporizador de inactividad
+                    await resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+
                     await flowDynamic([
-                        {  body: 'Muy bien '+ ctx.pushName + ', ahora debes digitar el número de la innovación que quieres conocer...' }
+                        { body: 'Muy bien ' + ctx.pushName + ', ahora debes digitar el número de la innovación que quieres conocer...' }
                     ]);
                 }
-            ).addAction(
+            )
+            .addAction(
                 { capture: true },
                 async (ctx, { gotoFlow, state }) => {
-                    console.log('mensaje recibido: ', ctx.body, ' y ', art);
+                    console.log('mensaje recibido: ', ctx.body);
                     if (!isNaN(ctx.body)) {
                         try {
                             await state.update({ i: parseInt(ctx.body) });
                         } catch (error) {
                             console.log(error);
                         }
-                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body)-1].fragmentoLink, textoPagina[parseInt(ctx.body)-1].indice);
-
+                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body) - 1].fragmentoLink, textoPagina[parseInt(ctx.body) - 1].indice);
                         return gotoFlow(flowEnviarArray);
                     }
-                    console.log('mensaje recibido: ', ctx.body, ' y ', art);
                 }
             );
 
-        const flowPrincipal3 = addKeyword(["reset", "Reset", "RESET"], { sensitive: true }).addAnswer(
-            'espere un momento, se están generando artículos...',
-            { delay: 1000 },
-            async (ctx, { provider, flowDynamic }) => {
+        // Flujo principal 3
+        const flowPrincipal3 = addKeyword(["reset", "Reset", "RESET"], { sensitive: true })
+    .addAnswer(
+        'espere un momento, se están generando artículos...',
+        { delay: 1000 },
+        async (ctx, { provider, flowDynamic, endFlow }) => {
+            try {
+               
+                // Generar el arreglo de números aleatorios
                 const arreglo = agregarNumerosAleatorios(user.arregloActual, textoPagina.length);
                 user = await actualizarUsuario(user.numeroWhatsapp, "arregloActual", arreglo);
+
+                // Recorrer el arreglo para enviar artículos
                 for (let index = 0; index < cantidad; index++) {
                     const e = textoPagina[user.arregloActual[index]];
-                    let bodyMessage;
-                    bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
+                    const bodyMessage = `${e.indice} - *${e.fragmentoTitulo}* \n${e.fragmentoTexto}`;
                     try {
-                        await flowDynamic([
-                            {
-                                body: bodyMessage,
-                                media: e.src
-                            }
-                        ]);
+                        // Enviar mensaje con el artículo
+                        await flowDynamic([{
+                            body: bodyMessage,
+                            media: e.src
+                        }]);
                     } catch (error) {
                         console.error('Error durante la ejecución de flowDynamic:', error);
                     }
                 }
-            }).addAction(
-                async (ctx, { flowDynamic }) => {
-                    await flowDynamic([
-                        {  body: 'Muy bien '+ ctx.pushName + ', ahora debes digitar el número de la innovación que quieres conocer...' }
-                    ]);
+            } catch (error) {
+                console.error('Error general en flowPrincipal3:', error);
+            }
+        }
+    )
+    .addAction(
+        async (ctx, { flowDynamic, endFlow }) => {
+            try {
+                // Iniciar el temporizador de inactividad
+                await resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+
+                await flowDynamic([
+                    { body: 'Muy bien ' + ctx.pushName + ', ahora debes digitar el número de la innovación que quieres conocer...' }
+                ]);
+            } catch (error) {
+                console.error('Error en el segundo addAction en flowPrincipal3:', error);
+            }
+        }
+    )
+    .addAction(
+        { capture: true },
+        async (ctx, { gotoFlow, state }) => {
+            if (!isNaN(ctx.body)) {
+                try {
+                    await state.update({ i: parseInt(ctx.body) });
+                    user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body) - 1].fragmentoLink, textoPagina[parseInt(ctx.body) - 1].indice);
+                    return gotoFlow(flowEnviarArray);
+                } catch (error) {
+                    console.error('Error en la captura de datos en flowPrincipal3:', error);
                 }
-            ).addAction({ capture: true },
-                async (ctx, { gotoFlow, state }) => {
-                    if (!isNaN(ctx.body)) {
-                        try {
-                            await state.update({ i: parseInt(ctx.body) });
-                        } catch (error) {
-                            console.log(error);
-                        }
-                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body)-1].fragmentoLink, textoPagina[parseInt(ctx.body)-1].indice);
-                        return gotoFlow(flowEnviarArray);
-                    }
-                }
-            );
+            }
+        }
+    );
+
+
 
         const flowPrincipal = addKeyword(EVENTS.WELCOME, { sensitive: true })
-            .addAction(async (ctx, { flowDynamic }) => {
-                console.log(ctx);
-                user = await verificarUsuario(ctx, textoPagina);
-                await flowDynamic([
-                    {
-                        body: 'Hola ' + ctx.pushName + ', bienvenido/a, mi nombre es *Lara* y soy una *divulgadora de innovaciones* de la Universidad Austral de Chile.',
-                        media: 'imgs/lara3.jpg'
-                    }
-                ]);
-            })
-            .addAnswer('Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.', { delay: 1000 })
-            .addAnswer('Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones', { delay: 1000 });
+        .addAction(async (ctx, { flowDynamic, gotoFlow }) => {
+            // Iniciar el temporizador de inactividad
+            await startInactividad(ctx, gotoFlow, 180000); // Temporizador de 10 segundos
+            // Verificamos si el usuario existe o lo creamos
+            user = await verificarUsuario(ctx, textoPagina);
+            // Enviamos la respuesta de bienvenida
+            await flowDynamic([
+                {
+                    body: 'Hola ' + ctx.pushName + ', bienvenido/a, mi nombre es *Lara* y soy una *divulgadora de innovaciones* de la Universidad Austral de Chile.',
+                    media: 'imgs/lara3.jpg'
+                }
+            ]);
+        })
+        .addAnswer('Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.', { delay: 1000 })
+        .addAnswer('Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones', { delay: 1000 });
+
+
 
         
-        const adapterFlow = await createFlow([flowPrincipal, flowPrincipal2, flowPrincipal3, flowEnviarArray, flowSecundario, flowAcademico, flowTerciario, flowDespedida]);
+        const adapterFlow = await createFlow([flowInactividad,flowPrincipal, flowPrincipal2, flowPrincipal3, flowEnviarArray, flowSecundario, flowAcademico, flowTerciario, flowDespedida]);
         const adapterProvider =  await createProvider(Provider)
         const adapterDB = await new Database()
         
@@ -424,7 +480,7 @@ const main = async () => {
             provider: adapterProvider,
             database: adapterDB,
         })
-        httpServer(+PORT)
+        httpServer(+PORT);
         
        
     
