@@ -1,0 +1,224 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3AB3C9FF93DC29765516',
+    participant: undefined
+  },
+  messageTimestamp: 1728446598,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: 'hola',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'hola',
+  name: 'Nico',
+  from: '56958349134',
+  host: '56936470064'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_365004fb-ddb1-4319-a1eb-85a2bf82ceea',
+  keyword: 'key_2c577b89-ebb5-4386-9bfb-68224d05bcf2',
+  answer: '__call_action__',
+  options: {
+    media: undefined,
+    buttons: [],
+    capture: false,
+    delay: 0,
+    idle: undefined,
+    ref: undefined,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '7050b9bd2c3095ac188ac9604cbf7587'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_773ee0f9-ff56-48c4-97d0-c5692ec88a08',
+  keyword: 'ans_365004fb-ddb1-4319-a1eb-85a2bf82ceea',
+  answer: 'Quiero que sepas que hay varias iniciativas que pueden resultar valiosas para tu institución o comunidad.',
+  options: {
+    media: undefined,
+    buttons: [],
+    capture: false,
+    delay: 1000,
+    idle: undefined,
+    ref: undefined,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '5550502b247fc5a9f81f57597a519a21'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_4712d6f1-90d8-488f-8945-e53707f05682',
+  keyword: 'ans_773ee0f9-ff56-48c4-97d0-c5692ec88a08',
+  answer: '__capture_only_intended__',
+  options: {
+    media: undefined,
+    buttons: [],
+    capture: false,
+    delay: 1000,
+    idle: undefined,
+    ref: undefined,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '5676015b7aeb4d1250a7242d64b81700'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_e7f6cb20-b427-4c33-82d1-ded839af7293',
+  keyword: 'ans_4712d6f1-90d8-488f-8945-e53707f05682',
+  answer: 'Ingresa la palabra *Iniciar* para comenzar a dialogar sobre innovaciones',
+  options: {
+    media: undefined,
+    buttons: [],
+    capture: false,
+    delay: 1000,
+    idle: undefined,
+    ref: undefined,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '137d8b222d1ac2416af7823ebd0c9174'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_e52ec801-2495-4e75-903b-2db186111074',
+  keyword: 'ans_e7f6cb20-b427-4c33-82d1-ded839af7293',
+  answer: '__capture_only_intended__',
+  options: {
+    media: undefined,
+    buttons: [],
+    capture: false,
+    delay: 1000,
+    idle: undefined,
+    ref: undefined,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '9c5fb0710dcff6c4ff7838b9de4bf979'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3A38C8B9CEAF94978AA9',
+    participant: undefined
+  },
+  messageTimestamp: 1728446619,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: 'iniciar',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'iniciar',
+  name: 'Nico',
+  from: '56958349134',
+  host: '56936470064'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_db0d82b6-8d1c-4a2e-b971-90e887c056c4',
+  keyword: 'key_c1c34705-950d-4ea8-a74a-9b4d1ae930da',
+  answer: 'espere un momento, se están generando artículos...',
+  options: {
+    media: undefined,
+    buttons: [],
+    capture: false,
+    delay: 1000,
+    idle: undefined,
+    ref: undefined,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '27917a9cc24a3f7c8bf6e74e5d0e36fc'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_06997cd6-9351-47c3-a9e1-0a0aa5784f8d',
+  keyword: 'ans_db0d82b6-8d1c-4a2e-b971-90e887c056c4',
+  answer: '__call_action__',
+  options: {
+    media: undefined,
+    buttons: [],
+    capture: false,
+    delay: 0,
+    idle: undefined,
+    ref: undefined,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: 'acbe25f5c3540dd38fd203b7670d9548'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_8fcc0f52-b217-449d-b6ca-01d947856f07',
+  keyword: 'ans_06997cd6-9351-47c3-a9e1-0a0aa5784f8d',
+  answer: '__capture_only_intended__',
+  options: {
+    media: undefined,
+    buttons: [],
+    capture: true,
+    delay: 0,
+    idle: undefined,
+    ref: undefined,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '7bf6587cc486ab7d7886e8d8629c9d8d'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3AF1AC2C99C319532815',
+    participant: undefined
+  },
+  messageTimestamp: 1728446634,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: '2',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '2',
+  name: 'Nico',
+  from: '56958349134',
+  host: '56936470064'
+}
+[handleMsg]:  {
+  key: {
+    remoteJid: '56958349134@s.whatsapp.net',
+    fromMe: false,
+    id: '3ADDF6192C2D175AFAFA',
+    participant: undefined
+  },
+  messageTimestamp: 1728446650,
+  pushName: 'Nico',
+  broadcast: false,
+  message: Message {
+    conversation: '1',
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: '1',
+  name: 'Nico',
+  from: '56958349134',
+  host: '56936470064'
+}

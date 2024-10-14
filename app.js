@@ -219,7 +219,7 @@ const main = async () => {
                 // Iniciar el temporizador de inactividad
                 resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
                 const myState = state.getMyState();
-                await flowDynamic(`más información: ${textoPagina[myState.i - 1].fragmentoLink}\n\nEstamos muy agradecidos de esta conversación contigo. Te proponemos seguir conociendo un poco más sobre innovaciones? \nDigita *Reset* para que te comparta otras tres iniciativas\n\nSi te interesa ser contactado en las próximas horas por una persona de la Dirección de Innovación UACh, digita *Contactar*`);
+                await flowDynamic(`más información: ${textoPagina[myState.i].fragmentoLink}\n\nEstamos muy agradecidos de esta conversación contigo. Te proponemos seguir conociendo un poco más sobre innovaciones? \nDigita *Reset* para que te comparta otras tres iniciativas\n\nSi te interesa ser contactado en las próximas horas por una persona de la Dirección de Innovación UACh, digita *Contactar*`);
             });
 
         // Flujo académico
@@ -227,7 +227,7 @@ const main = async () => {
             .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
                 try {
                     const myState = state.getMyState();
-                    const e = textoPagina[myState.i - 1];
+                    const e = textoPagina[myState.i];
                     let imagen = e.imgSrc;
 
                     await flowDynamic([{
@@ -251,11 +251,11 @@ const main = async () => {
         const flowSecundario = addKeyword('1', { sensitive: true })
             .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
                 const myState = state.getMyState();
-                await flowDynamic(`${textoPagina[myState.i - 1].indice} - *${textoPagina[myState.i - 1].fragmentoTitulo}*\n\n${textoPagina[myState.i - 1].solutionText}`);
+                await flowDynamic(`${textoPagina[myState.i].indice} - *${textoPagina[myState.i].fragmentoTitulo}*\n\n${textoPagina[myState.i].solutionText}`);
             })
             .addAction(async (ctx, { flowDynamic, endFlow }) => {
                 // Iniciar el temporizador de inactividad
-                resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+                resetInactividad(ctx, endFlow, 180000); // 3 minuto para el temporizador
 
                 await flowDynamic([
                     { body: `Muy bien, gracias por interesarte en nuestro trabajo \n¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *2* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*` }
@@ -266,11 +266,11 @@ const main = async () => {
         const flowEnviarArray = addKeyword('0', { sensitive: true })
             .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
                 const myState = state.getMyState();
-                const e = textoPagina[myState.i - 1];
+                const e = textoPagina[myState.i];
 
                 await flowDynamic([{
                     body: `${e.indice} - *${e.fragmentoTitulo}* \n${e.problematicText}`,
-                    media: textoPagina[myState.i - 1].src
+                    media: textoPagina[myState.i].src
                 }]);
             })
             .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
@@ -339,7 +339,7 @@ const main = async () => {
                         } catch (error) {
                             console.log(error);
                         }
-                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body) - 1].fragmentoLink, textoPagina[parseInt(ctx.body) - 1].indice);
+                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body) ].fragmentoLink, textoPagina[parseInt(ctx.body)].indice);
                         return gotoFlow(flowEnviarArray);
                     }
                 }
@@ -380,7 +380,7 @@ const main = async () => {
         async (ctx, { flowDynamic, endFlow }) => {
             try {
                 // Iniciar el temporizador de inactividad
-                await resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+                await resetInactividad(ctx, endFlow, 180000); // 3 minuto para el temporizador
 
                 await flowDynamic([
                     { body: 'Muy bien ' + ctx.pushName + ', ahora debes digitar el número de la innovación que quieres conocer...' }
@@ -396,7 +396,7 @@ const main = async () => {
             if (!isNaN(ctx.body)) {
                 try {
                     await state.update({ i: parseInt(ctx.body) });
-                    user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body) - 1].fragmentoLink, textoPagina[parseInt(ctx.body) - 1].indice);
+                    user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body) ].fragmentoLink, textoPagina[parseInt(ctx.body) ].indice);
                     return gotoFlow(flowEnviarArray);
                 } catch (error) {
                     console.error('Error en la captura de datos en flowPrincipal3:', error);
