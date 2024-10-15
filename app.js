@@ -280,10 +280,7 @@ const main = async () => {
                 await flowDynamic([{
                     body: `Excelente, ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *1* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
                 }]);
-            }).addAction( { capture: true },
-                async (ctx, { gotoFlow, state }) => {
-                    return gotoFlow(flowSecundario);
-                });
+            });
 
         // Flujo principal 2
         const flowPrincipal2 = addKeyword(["iniciar", "Iniciar", "INICIAR", "Return", "RETURN", "return"], { sensitive: true })
@@ -439,7 +436,6 @@ const main = async () => {
         })
         httpServer(+PORT);
         
-       
     
 };
 
