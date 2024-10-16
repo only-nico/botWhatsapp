@@ -177,6 +177,7 @@ cron.schedule('0 3 * * *', async () => {
 const main = async () => {
         const scraping = await ejecutarScrapingDiario();
         const textoPagina= await obtenerArticulosDesdeFirebase();
+        textoPagina.sort((a, b) => a.indice - b.indice);
         let art = 1;
         let user;
         const arregloAleatorio = [];
@@ -196,8 +197,8 @@ const main = async () => {
         // Flujo de despedida
         const flowDespedida = addKeyword(['chao', 'CHAO', 'Chao', 'adios', 'Contactar', 'contactar', 'Contactar'], { sensitive: true })
             .addAction(async (ctx, { flowDynamic, endFlow }) => {
-                // Iniciar el temporizador de inactividad
-                resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+                // Detiene el temporizador de inactividad
+                await stopInactividad(ctx); 
 
                 await flowDynamic([
                     {
@@ -215,21 +216,20 @@ const main = async () => {
 
         // Flujo terciario
         const flowTerciario = addKeyword('3', { sensitive: true })
-            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+            .addAction(async (ctx, { flowDynamic, state, endFlow,gotoFlow }) => {
                 // Iniciar el temporizador de inactividad
-                resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+                resetInactividad(ctx, gotoFlow, 60000); // 1 minuto para el temporizador
                 const myState = state.getMyState();
-                await flowDynamic(`más información: ${textoPagina[myState.i].fragmentoLink}\n\nEstamos muy agradecidos de esta conversación contigo. Te proponemos seguir conociendo un poco más sobre innovaciones? \nDigita *Reset* para que te comparta otras tres iniciativas\n\nSi te interesa ser contactado en las próximas horas por una persona de la Dirección de Innovación UACh, digita *Contactar*`);
+                await flowDynamic(`más información: ${textoPagina[myState.i-1].fragmentoLink}\n\nEstamos muy agradecidos de esta conversación contigo. Te proponemos seguir conociendo un poco más sobre innovaciones? \nDigita *Reset* para que te comparta otras tres iniciativas\n\nSi te interesa ser contactado en las próximas horas por una persona de la Dirección de Innovación UACh, digita *Contactar*`);
             });
 
         // Flujo académico
         const flowAcademico = addKeyword('2', { sensitive: true })
-            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+            .addAction(async (ctx, { flowDynamic, state, endFlow,gotoFlow }) => {
                 try {
                     const myState = state.getMyState();
-                    const e = textoPagina[myState.i];
+                    const e = textoPagina[myState.i-1];
                     let imagen = e.imgSrc;
-
                     await flowDynamic([{
                         body: `${e.indice} - *${e.fragmentoTitulo}* \n El investigador responsable de este proyecto es *${e.headingText}*`,
                         media: imagen
@@ -238,9 +238,9 @@ const main = async () => {
                     console.error('Error en flowAcademico:', error);
                 }
             })
-            .addAction(async (ctx, { flowDynamic, endFlow }) => {
+            .addAction(async (ctx, { flowDynamic, endFlow,gotoFlow }) => {
                 // Iniciar el temporizador de inactividad
-                resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+                resetInactividad(ctx, gotoFlow, 120000); // 1 minuto para el temporizador
 
                 await flowDynamic([
                     { body: 'Excelente ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *3* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*' }
@@ -249,13 +249,13 @@ const main = async () => {
 
         // Flujo secundario
         const flowSecundario = addKeyword('1', { sensitive: true })
-            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+            .addAction(async (ctx, { flowDynamic, state, endFlow,gotoFlow }) => {
                 const myState = state.getMyState();
-                await flowDynamic(`${textoPagina[myState.i].indice} - *${textoPagina[myState.i].fragmentoTitulo}*\n\n${textoPagina[myState.i].solutionText}`);
+                await flowDynamic(`${textoPagina[myState.i-1].indice} - *${textoPagina[myState.i-1].fragmentoTitulo}*\n\n${textoPagina[myState.i-1].solutionText}`);
             })
-            .addAction(async (ctx, { flowDynamic, endFlow }) => {
+            .addAction(async (ctx, { flowDynamic, endFlow,gotoFlow }) => {
                 // Iniciar el temporizador de inactividad
-                resetInactividad(ctx, endFlow, 180000); // 3 minuto para el temporizador
+                resetInactividad(ctx, gotoFlow, 120000); // 3 minuto para el temporizador
 
                 await flowDynamic([
                     { body: `Muy bien, gracias por interesarte en nuestro trabajo \n¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *2* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*` }
@@ -264,18 +264,19 @@ const main = async () => {
 
         // Flujo para enviar array
         const flowEnviarArray = addKeyword('0', { sensitive: true })
-            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+            .addAction(async (ctx, { flowDynamic, state, endFlow,gotoFlow }) => {
                 const myState = state.getMyState();
-                const e = textoPagina[myState.i];
+
+                const e = textoPagina[myState.i-1];
 
                 await flowDynamic([{
                     body: `${e.indice} - *${e.fragmentoTitulo}* \n${e.problematicText}`,
-                    media: textoPagina[myState.i].src
+                    media: textoPagina[myState.i-1].src
                 }]);
             })
-            .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+            .addAction(async (ctx, { flowDynamic, state, endFlow,gotoFlow }) => {
                 // Iniciar el temporizador de inactividad
-                await resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
+                resetInactividad(ctx, gotoFlow, 120000); // 1 minuto para el temporizador
 
                 await flowDynamic([{
                     body: `Excelente, ¿Quieres seguir conociendo un poco más sobre esta innovación? Digita *1* \n\n¿Quieres explorar información sobre otras innovaciones? Digita *Reset*`,
@@ -318,10 +319,9 @@ const main = async () => {
                 }
             )
             .addAction(
-                async (ctx, { flowDynamic, endFlow }) => {
+                async (ctx, { flowDynamic, endFlow ,gotoFlow}) => {
                     // Iniciar el temporizador de inactividad
-                    await resetInactividad(ctx, endFlow, 180000); // 1 minuto para el temporizador
-
+                    resetInactividad(ctx, gotoFlow, 120000); // 1 minuto para el temporizador
                     await flowDynamic([
                         { body: 'Muy bien ' + ctx.pushName + ', ahora debes digitar el número de la innovación que quieres conocer...' }
                     ]);
@@ -329,14 +329,15 @@ const main = async () => {
             )
             .addAction(
                 { capture: true },
-                async (ctx, { gotoFlow, state }) => {
+                async (ctx, { gotoFlow, state,endFlow }) => {
                     if (!isNaN(ctx.body)) {
                         try {
                             await state.update({ i: parseInt(ctx.body) });
                         } catch (error) {
                             console.log(error);
                         }
-                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body) ].fragmentoLink, textoPagina[parseInt(ctx.body)].indice);
+                        resetInactividad(ctx, gotoFlow, 120000); // 1 minuto para el temporizador
+                        user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body)-1 ].fragmentoLink, textoPagina[parseInt(ctx.body)-1].indice);
                         return gotoFlow(flowEnviarArray);
                     }
                 }
@@ -347,13 +348,12 @@ const main = async () => {
     .addAnswer(
         'espere un momento, se están generando artículos...',
         { delay: 1000 },
-        async (ctx, { provider, flowDynamic, endFlow }) => {
+        async (ctx, { provider, flowDynamic, endFlow ,gotoFlow}) => {
             try {
                
                 // Generar el arreglo de números aleatorios
                 const arreglo = agregarNumerosAleatorios(user.arregloActual, textoPagina.length);
                 user = await actualizarUsuario(user.numeroWhatsapp, "arregloActual", arreglo);
-
                 // Recorrer el arreglo para enviar artículos
                 for (let index = 0; index < cantidad; index++) {
                     const e = textoPagina[user.arregloActual[index]];
@@ -374,10 +374,10 @@ const main = async () => {
         }
     )
     .addAction(
-        async (ctx, { flowDynamic, endFlow }) => {
+        async (ctx, { flowDynamic, endFlow,gotoFlow }) => {
             try {
                 // Iniciar el temporizador de inactividad
-                await resetInactividad(ctx, endFlow, 180000); // 3 minuto para el temporizador
+                resetInactividad(ctx, gotoFlow, 120000); // 3 minuto para el temporizador
 
                 await flowDynamic([
                     { body: 'Muy bien ' + ctx.pushName + ', ahora debes digitar el número de la innovación que quieres conocer...' }
@@ -393,7 +393,10 @@ const main = async () => {
             if (!isNaN(ctx.body)) {
                 try {
                     await state.update({ i: parseInt(ctx.body) });
-                    user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body) ].fragmentoLink, textoPagina[parseInt(ctx.body) ].indice);
+                    console.log(ctx.body);
+                    resetInactividad(ctx, gotoFlow, 120000); // 1 minuto para el temporizador
+
+                    user = await agregarPaginaVisitada(user.numeroWhatsapp, textoPagina[parseInt(ctx.body) -1].fragmentoLink, textoPagina[parseInt(ctx.body) -1].indice);
                     return gotoFlow(flowEnviarArray);
                 } catch (error) {
                     console.error('Error en la captura de datos en flowPrincipal3:', error);
@@ -407,7 +410,7 @@ const main = async () => {
         const flowPrincipal = addKeyword(EVENTS.WELCOME, { sensitive: true })
         .addAction(async (ctx, { flowDynamic, gotoFlow }) => {
             // Iniciar el temporizador de inactividad
-            await startInactividad(ctx, gotoFlow, 180000); // Temporizador de 10 segundos
+            startInactividad(ctx, gotoFlow, 120000); // Temporizador de 10 segundos
             // Verificamos si el usuario existe o lo creamos
             user = await verificarUsuario(ctx, textoPagina);
             // Enviamos la respuesta de bienvenida
